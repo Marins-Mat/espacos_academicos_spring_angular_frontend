@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+body, html {
+    margin: 0px;
+    margin-top: 35px;
+    padding: 0px;
+    background-color: antiquewhite;
+    
+    display: flex;
+    justify-content: center;
+}
