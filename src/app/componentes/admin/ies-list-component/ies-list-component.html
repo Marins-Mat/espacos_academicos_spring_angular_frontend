@@ -1,0 +1,65 @@
+<div class="container">
+    <header class="cabecalho">
+        <h1>Instituições de Ensino Superior</h1>
+
+        <button (click)="novaIes()">Nova IES</button>
+    </header>
+
+    <section class="ies-container">
+        <header class="filtros">
+            <div class="filtro">
+                <label for="sigla">Buscar</label>
+                <input type="text" name="sigla" id="sigla" [(ngModel)]="filtroTexto" placeholder="Sigla ou Nome">
+            </div>
+
+            <div class="filtro">
+                <label for="status">Status</label>
+                <select id="status" [(ngModel)]="filtroStatus">
+                    <option value="Todos">Todos</option>
+                    <option value="Ativa">Ativa</option>
+                    <option value="Inativa">Inativa</option>
+                </select>
+            </div>
+
+        </header>
+
+        <div class="tabela-responsiva">
+            <table class="tabela-ies">
+                <thead>
+                    <th>Sigla</th>
+                    <th>Nome</th>
+                    <th>Reitor</th>
+                    <th>E-mail</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </thead>
+                <tbody>
+                    @for (ies of iesFiltradas; track ies.id) {
+                    <tr>
+                        <td>{{ies.sigla}}</td>
+                        <td>{{ies.nome}}</td>
+                        <td>{{ies.reitor}}</td>
+                        <td>{{ies.email}}</td>
+                        @if (ies.status==="Ativa") {
+                        <td class="status-ativa">Ativa</td>
+                        } @else {
+                        <td class="status-inativa">Inativa</td>
+                        }
+                        <td class="acoes">
+                            <div class="btn-group-acoes">
+                                <button class="btn-acao">Editar</button>
+                                <button class="btn-acao" (click)="alternarStatus(ies)">
+                                    {{ ies.status === 'Ativa' ? 'Inativar' : 'Reativar' }}
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    } @empty {
+                    <tr colspan="6" class="sem-resultados">Nenhuma IES encontrada.</tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+</div>
