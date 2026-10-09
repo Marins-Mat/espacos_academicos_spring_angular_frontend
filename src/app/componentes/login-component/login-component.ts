@@ -15,6 +15,7 @@ export class LoginComponent {
   onSubmit(): void {
     console.log("E-mail digitado: ", this.email())
     console.log("Senha digitada: ", this.senha())
-
+    this.email.set("")
+    this.senha.set("")
   }
 }

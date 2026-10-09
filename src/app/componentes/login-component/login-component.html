@@ -1,20 +1,22 @@
-<div class="login-box">
-    <h1>Login</h1>
+<div class="container">
+    <div class="login-box">
+        <h1>Entrar</h1>
 
-    <form (ngSubmit)="onSubmit()">
-        <div class="inputs-box">
-            <div>
-                <label for="email">E-mail: </label>
-                <input type="email" name="email" id="emailinput" [(ngModel)]="email" placeholder="E-mail: " required>
+        <form (ngSubmit)="onSubmit()">
+            <div class="inputs-box">
+                <div>
+                    <label for="email">E-mail: </label>
+                    <input type="email" name="email" id="emailinput" [(ngModel)]="email" required>
+                </div>
+                <div>
+                    <label for="password">Senha: </label>
+                    <input type="password" name="pass" id="passinput" [(ngModel)]="senha" required>
+                </div>
+
             </div>
-            <div>
-                <label for="password">Senha: </label>
-                <input type="password" name="pass" id="passinput" [(ngModel)]="senha" placeholder="Senha: " required>
-            </div>
 
-        </div>
+            <button class="loginbtn" type="submit">Entrar</button>
 
-        <button class="loginbtn" type="submit">Login</button>
-        
-    </form>
+        </form>
+    </div>
 </div>
