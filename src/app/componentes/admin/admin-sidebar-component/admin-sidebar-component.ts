@@ -10,13 +10,13 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class AdminSidebarComponent {
   menuItens = [
-    {label: 'Instituições (IES)', route: '/ies'},
-    {label: 'Centros Acadêmicos', route: '/centros'},
-    {label: 'Cursos', route: '/cursos'},
-    {label: 'Docentes', route: '/docentes'},
-    {label: 'Usuários e Perfis', route: '/usuarios'},
-    {label: 'Auditoria', route: '/auditoria'},
-    {label: 'Relatórios', route: '/relatorios'}
+    {label: 'Instituições (IES)', route: '/admin/ies'},
+    {label: 'Centros Acadêmicos', route: '/admin/centros'},
+    {label: 'Cursos', route: '/admin/cursos'},
+    {label: 'Docentes', route: '/admin/docentes'},
+    {label: 'Usuários e Perfis', route: '/admin/usuarios'},
+    {label: 'Auditoria', route: '/admin/auditoria'},
+    {label: 'Relatórios', route: '/admin/relatorios'}
   ]
 
 

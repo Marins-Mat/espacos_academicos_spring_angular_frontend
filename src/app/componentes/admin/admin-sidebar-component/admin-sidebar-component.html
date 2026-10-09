@@ -4,13 +4,9 @@
 
     <nav>
         @for (item of menuItens; track item.label) {
-        <div class="itemMenu">
-            <a [routerLink]="item.route" routerLinkActive="active">
+            <a [routerLink]="item.route" routerLinkActive="active" class="itemMenu">
                 {{item.label}}
             </a>
-        </div>
-
-
         }
     </nav>
 </div>
