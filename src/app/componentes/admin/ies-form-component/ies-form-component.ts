@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -11,14 +11,19 @@ import { Router } from '@angular/router';
 export class IesFormComponent {
   router = inject(Router);
 
-
-  sigla: string = '';
-  nome: string = '';
-  reitor: string = '';
-  email: string = '';
-  telefone: string = '';
+  sigla = signal<string>('');
+  nome = signal<string>('');
+  reitor = signal<string>('');
+  email = signal<string>('');
+  telefone = signal<string>('');
   
-  onSubmit() {
+  onSubmit(): void {
+    console.log(this.sigla())
+    console.log(this.nome())
+    console.log(this.reitor())
+    console.log(this.email())
+    console.log(this.telefone())
+
     this.router.navigate(['/admin/ies']);
   }
 }
