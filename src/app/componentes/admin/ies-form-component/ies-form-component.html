@@ -1,1 +1,45 @@
-<p>ies-form-component works!</p>
+<div class="container">
+    <header class="cabecalho">
+        <h1>Nova Instituição</h1>
+    </header>
+
+    <section class="ies-container">
+
+        <form (ngSubmit)="onSubmit()">
+
+
+            <div class="itemForm">
+                <label for="sigla">Sigla</label>
+                <input type="text" id="sigla">
+
+            </div>
+
+            <div class="itemForm campo-grande">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome">
+            </div>
+
+            <!--Reitor deveria ser um select com os docentes cadastrados?-->
+
+            <div class="itemForm">
+                <label for="reitor">Reitor</label>
+                <input type="text" id="reitor">
+            </div>
+            <div class="itemForm">
+                <label for="telefone">Telefone central</label>
+                <input type="text" id="telefone">
+            </div>
+            <div class="itemForm campo-grande">
+                <label for="email">E-mail central</label>
+                <input type="email" id="email">
+            </div>
+
+            <div class="btnForm">
+                <button>Salvar</button>
+            </div>
+
+
+        </form>
+
+    </section>
+</div>
