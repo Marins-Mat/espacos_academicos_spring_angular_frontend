@@ -56,7 +56,11 @@ form {
 
 .itemForm input {
     height: 25px;
+}
 
+
+.itemForm select {
+    height: 25px;
 }
 
 .btnForm {

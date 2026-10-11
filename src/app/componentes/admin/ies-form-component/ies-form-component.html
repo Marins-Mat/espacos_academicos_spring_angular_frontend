@@ -6,8 +6,6 @@
     <section class="ies-container">
 
         <form (ngSubmit)="onSubmit()">
-
-
             <div class="itemForm">
                 <label for="sigla">Sigla</label>
                 <input type="text" name="sigla" id="sigla" [(ngModel)]="sigla">
@@ -33,12 +31,20 @@
                 <label for="email">E-mail Central</label>
                 <input type="email" name="email" id="email" [(ngModel)]="email">
             </div>
-
+            <div  class="itemForm">
+                <label for="status" >Status</label>
+                <select name="status" id="status" [(ngModel)]="status">
+                    <option value="Ativa">Ativa</option>
+                    <option value="Inativa">Inativa</option>
+                </select>
+            </div>
+            <div  class="itemForm">
+                <label for="data">Data de cadastramento: </label>
+                <time datetime="">{{data().toLocaleDateString('pt-BR')}}</time>
+            </div>
             <div class="btnForm">
                 <button>Salvar</button>
             </div>
-
-
         </form>
 
     </section>

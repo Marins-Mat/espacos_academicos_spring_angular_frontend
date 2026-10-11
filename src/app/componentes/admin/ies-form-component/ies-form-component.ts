@@ -16,6 +16,8 @@ export class IesFormComponent {
   reitor = signal<string>('');
   email = signal<string>('');
   telefone = signal<string>('');
+  status = signal<string>('');
+  data = signal<Date>(new Date(2026, 9, 10));
   
   onSubmit(): void {
     console.log(this.sigla())
@@ -23,7 +25,9 @@ export class IesFormComponent {
     console.log(this.reitor())
     console.log(this.email())
     console.log(this.telefone())
-
+    console.log(this.status())
+    console.log(this.data().toLocaleDateString('pt-BR'))
+    
     this.router.navigate(['/admin/ies']);
   }
 }
