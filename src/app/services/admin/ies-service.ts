@@ -5,8 +5,10 @@ export interface Ies {
     sigla: string;
     nome: string;
     reitor: string;
+    telefone: string;
     email: string;
     status: 'Ativa' | 'Inativa';
+    data: Date;
 }
 
 @Injectable({
@@ -16,9 +18,9 @@ export interface Ies {
 export class IesService {
 
     listaIes = signal<Ies[]>([
-        { id: 1, sigla: 'UCSAL', nome: 'Universidade Católica do Salvador', reitor: 'Dr. Silva', email: 'contato@ucsal.br', status: 'Ativa' },
-        { id: 2, sigla: 'UCB', nome: 'Universidade Católica de Brasília', reitor: 'Dra. Maria', email: 'contato@ucb.br', status: 'Ativa' },
-        { id: 3, sigla: 'PUC-Rio', nome: 'Pontifícia Universidade Católica do Rio de Janeiro', reitor: 'Dr. João', email: 'contato@puc-rio.br', status: 'Inativa' }
+        { id: 1, sigla: 'UCSAL', nome: 'Universidade Católica do Salvador', reitor: 'Dr. Silva', email: 'contato@ucsal.br', telefone: '71 9 xxxxxxxx',  status: 'Ativa', data: new Date(2012, 10, 4)},
+        { id: 2, sigla: 'UCB', nome: 'Universidade Católica de Brasília', reitor: 'Dra. Maria', email: 'contato@ucb.br', telefone: '71 9 xxxxxxxx',status: 'Ativa', data: new Date(2026, 5, 7) },
+        { id: 3, sigla: 'PUC-Rio', nome: 'Pontifícia Universidade Católica do Rio de Janeiro', reitor: 'Dr. João', email: 'contato@puc-rio.br', telefone: '71 9 xxxxxxxx', status: 'Inativa', data: new Date(2003, 9, 10)}
     ])
 
     obterPorId(id: number): Ies | undefined {
@@ -30,7 +32,7 @@ export class IesService {
     }
 
     adicionar(novaIes: Omit<Ies, 'id'>) {
-        const novoId = this.listaIes.length + 1;
+        const novoId = this.listaIes().length + 1;
         this.listaIes.update(listaIes => [...listaIes, { ...novaIes, id: novoId }])
     }
 

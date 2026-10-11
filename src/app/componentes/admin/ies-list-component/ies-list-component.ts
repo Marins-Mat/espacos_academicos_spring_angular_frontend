@@ -1,11 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Ies, IesService } from '../../../services/admin/ies-service';
 
 
 @Component({
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   selector: 'app-ies-list-component',
   styleUrl: './ies-list-component.css',
   templateUrl: './ies-list-component.html',

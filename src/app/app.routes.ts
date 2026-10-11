@@ -15,7 +15,8 @@ export const routes: Routes = [
                 path: 'ies', component: IesParentComponent,
                 children: [
                     { path: '', component: IesListComponent },
-                    { path: 'nova', component: IesFormComponent }
+                    { path: 'nova', component: IesFormComponent },
+                    { path: 'editar/:id', component: IesFormComponent}
                 ]
             }
         ]

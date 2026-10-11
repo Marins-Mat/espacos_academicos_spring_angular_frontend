@@ -67,6 +67,7 @@ form {
     display: flex;
     align-items: center;
     justify-content: center;
+    
     margin-bottom: 15px;
     width: 250px;
 }
@@ -79,9 +80,15 @@ form {
     font-size: 15px;
     font-weight: 500;
     width: 115px;
-    height: 45px;
+    height: 40px;
+    margin: 7px;
+
 }
 
 .btnForm button:hover {
     cursor: pointer;
+}
+
+.btnForm .btn-cancelar{
+    background-color: #8c1f1f;
 }

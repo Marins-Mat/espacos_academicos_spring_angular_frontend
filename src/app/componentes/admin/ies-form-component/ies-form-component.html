@@ -5,45 +5,46 @@
 
     <section class="ies-container">
 
-        <form (ngSubmit)="onSubmit()">
+        <form (ngSubmit)="salvar()">
             <div class="itemForm">
                 <label for="sigla">Sigla</label>
-                <input type="text" name="sigla" id="sigla" [(ngModel)]="sigla">
+                <input type="text" name="sigla" id="sigla" [(ngModel)]="iesForm().sigla">
 
             </div>
 
             <div class="itemForm campo-grande">
                 <label for="nome">Nome</label>
-                <input type="text" name="nome" id="nome" [(ngModel)]="nome">
+                <input type="text" name="nome" id="nome" [(ngModel)]="iesForm().nome">
             </div> 
 
             <!--Reitor deveria ser um select com os docentes cadastrados?-->
 
             <div class="itemForm">
                 <label for="reitor">Reitor</label>
-                <input type="text" name="reitor" id="reitor" [(ngModel)]="reitor">
+                <input type="text" name="reitor" id="reitor" [(ngModel)]="iesForm().reitor">
             </div>
             <div class="itemForm">
                 <label for="telefone">Telefone Central</label>
-                <input type="text" name="telefone" id="telefone" [(ngModel)]="telefone">
+                <input type="text" name="telefone" id="telefone" [(ngModel)]="iesForm().telefone">
             </div>
             <div class="itemForm campo-grande">
                 <label for="email">E-mail Central</label>
-                <input type="email" name="email" id="email" [(ngModel)]="email">
+                <input type="email" name="email" id="email" [(ngModel)]="iesForm().email">
             </div>
             <div  class="itemForm">
                 <label for="status" >Status</label>
-                <select name="status" id="status" [(ngModel)]="status">
+                <select name="status" id="status" [(ngModel)]="iesForm().status">
                     <option value="Ativa">Ativa</option>
                     <option value="Inativa">Inativa</option>
                 </select>
             </div>
             <div  class="itemForm">
                 <label for="data">Data de cadastramento: </label>
-                <time datetime="">{{data().toLocaleDateString('pt-BR')}}</time>
+                <time datetime="">{{iesForm().data.toLocaleDateString('pt-BR')}}</time>
             </div>
             <div class="btnForm">
-                <button>Salvar</button>
+                <button type="submit">Salvar</button>
+                <button type="button" class="btn-cancelar" routerLink="/admin/ies">Cancelar</button>
             </div>
         </form>
 

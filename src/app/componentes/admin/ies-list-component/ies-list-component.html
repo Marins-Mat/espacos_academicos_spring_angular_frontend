@@ -47,7 +47,7 @@
                         }
                         <td class="acoes">
                             <div class="btn-group-acoes">
-                                <button class="btn-acao">Editar</button>
+                                <button class="btn-acao" [routerLink]="['/admin/ies/editar', ies.id]">Editar</button>
                                 <button class="btn-acao" (click)="alternarStatus(ies.id)">
                                     {{ ies.status === 'Ativa' ? 'Inativar' : 'Reativar' }}
                                 </button>
