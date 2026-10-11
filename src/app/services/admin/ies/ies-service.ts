@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Service, signal } from '@angular/core';
 
 export interface Ies {
     id: number;
@@ -11,9 +11,7 @@ export interface Ies {
     data: Date;
 }
 
-@Injectable({
-    providedIn: 'root' // Disponível na aplicação inteira
-})
+@Service()
 
 export class IesService {
 
@@ -24,11 +22,11 @@ export class IesService {
     ])
 
     obterPorId(id: number): Ies | undefined {
-        return this.listaIes().find(item => item.id === id);
+        return this.listaIes().find(ies => ies.id === id);
     }
 
     salvar(iesAtualizada: Ies) {
-        this.listaIes.update(listaIes => this.listaIes().map(item => item.id === iesAtualizada.id ? iesAtualizada : item))
+        this.listaIes.update(listaIes => this.listaIes().map(ies => ies.id === iesAtualizada.id ? iesAtualizada : ies))
     }
 
     adicionar(novaIes: Omit<Ies, 'id'>) {
@@ -37,9 +35,9 @@ export class IesService {
     }
 
     alterarStatus(id: number) {
-        this.listaIes.update(listaIes => listaIes.map(item => item.id === id ? { ...item, status: item.status === 'Ativa' ? 'Inativa' : 'Ativa' } : item))
+        this.listaIes.update(listaIes => listaIes.map(ies => ies.id === id ? { ...ies, status: ies.status === 'Ativa' ? 'Inativa' : 'Ativa' } : ies))
     }
-
+    
     filtrar(filtroTexto: string, filtroStatus: string): Ies[] {
         const texto = filtroTexto.toLowerCase();
         const status = filtroStatus;

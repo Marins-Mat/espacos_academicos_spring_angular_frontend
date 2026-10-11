@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Ies, IesService } from '../../../services/admin/ies-service';
+import { Ies, IesService } from '../../../../services/admin/ies/ies-service';
 
 
 @Component({
