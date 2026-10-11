@@ -14,7 +14,7 @@
 
             <div class="filtro">
                 <label for="status">Status</label>
-                <select id="status" [(ngModel)]="filtroStatus">
+                <select id="status" name="status" [(ngModel)]="filtroStatus">
                     <option value="Todos">Todos</option>
                     <option value="Ativa">Ativa</option>
                     <option value="Inativa">Inativa</option>
@@ -47,8 +47,8 @@
                         }
                         <td class="acoes">
                             <div class="btn-group-acoes">
-                                <button class="btn-acao">Editar</button>
-                                <button class="btn-acao" (click)="alternarStatus(ies)">
+                                <button class="btn-acao" [routerLink]="['/admin/ies/editar', ies.id]">Editar</button>
+                                <button class="btn-acao" (click)="alternarStatus(ies.id)">
                                     {{ ies.status === 'Ativa' ? 'Inativar' : 'Reativar' }}
                                 </button>
                             </div>
