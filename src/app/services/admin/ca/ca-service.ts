@@ -7,7 +7,8 @@ export interface Ca {
     email: string;
     coordenador: string;
     IesVinculada: string;
-    status: 'Ativa' | 'Inativa';
+    status: 'Ativo' | 'Inativo';
+    dataDeCadastramento: Date;
 }
 
 @Service()
@@ -23,7 +24,8 @@ export class CaService {
             email: "cedu@exemplo.ucsal.br",
             coordenador: "Ana Beatriz Souza",
             IesVinculada: "UCSAL",
-            status: "Ativa"
+            status: "Ativo",
+            dataDeCadastramento: new Date(2026, 5, 6)
         },
         {
             id: 2,
@@ -32,7 +34,8 @@ export class CaService {
             email: "chum@exemplo.ucsal.br",
             coordenador: "Carlos Eduardo Lima",
             IesVinculada: "UCSAL",
-            status: "Ativa"
+            status: "Ativo",
+            dataDeCadastramento: new Date(2025, 3, 2)
         },
         {
             id: 3,
@@ -41,7 +44,8 @@ export class CaService {
             email: "ccsa@exemplo.ucsal.br",
             coordenador: "Mariana Costa Ribeiro",
             IesVinculada: "UCSAL",
-            status: "Ativa"
+            status: "Inativo",
+            dataDeCadastramento: new Date(2021, 5, 4)
         },
         {
             id: 4,
@@ -50,7 +54,8 @@ export class CaService {
             email: "ccet@exemplo.ucsal.br",
             coordenador: "Roberto Almeida Santos",
             IesVinculada: "UCSAL",
-            status: "Ativa"
+            status: "Ativo",
+            dataDeCadastramento: new Date(2020, 7, 30)
         }
     ])
 
@@ -68,7 +73,7 @@ export class CaService {
         }
     
         alterarStatus(id: number) {
-            this.listaCas.update(listaCas => listaCas.map(ca => ca.id === id ? { ...ca, status: ca.status === 'Ativa' ? 'Inativa' : 'Ativa' } : ca))
+            this.listaCas.update(listaCas => listaCas.map(ca => ca.id === id ? { ...ca, status: ca.status === 'Ativo' ? 'Inativo' : 'Ativo' } : ca))
         }
 
     filtrar(filtroTexto: string, filtroStatus: string) : Ca[] {
