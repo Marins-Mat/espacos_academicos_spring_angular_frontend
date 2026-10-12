@@ -11,6 +11,9 @@ import { CursoParentComponent } from './componentes/admin/curso/curso-parent-com
 import { CursoListComponent } from './componentes/admin/curso/curso-list-component/curso-list-component';
 import { Component } from '@angular/core';
 import { CursoFormComponent } from './componentes/admin/curso/curso-form-component/curso-form-component';
+import { DocenteParentComponent } from './componentes/admin/docentes/docente-parent-component/docente-parent-component';
+import { DocenteListComponent } from './componentes/admin/docentes/docente-list-component/docente-list-component';
+import { DocenteFormComponent } from './componentes/admin/docentes/docente-form-component/docente-form-component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -41,6 +44,14 @@ export const routes: Routes = [
                     { path: '', component: CursoListComponent },
                     { path: 'novo', component: CursoFormComponent },
                     { path: 'editar/:id', component: CursoFormComponent }
+                ]
+            },
+            {
+                path: 'docentes', component: DocenteParentComponent,
+                children: [
+                    { path: '', component: DocenteListComponent },
+                    { path: 'novo', component: DocenteFormComponent },
+                    { path: 'editar/:id', component: DocenteFormComponent }
                 ]
             }
         ]
