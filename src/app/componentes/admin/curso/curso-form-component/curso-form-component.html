@@ -1,0 +1,70 @@
+<div class="container">
+    <header class="cabecalho">
+        <h1>Novo Curso</h1>
+    </header>
+
+    <section class="cursos-container">
+        <form (ngSubmit)="salvar()">
+
+            <div class="itemForm campo-grande">
+                <label for="sigla">Sigal do Curso</label>
+                <input type="text" name="sigla" id="sigla" [(ngModel)]="cursoForm().sigla">
+            </div>
+
+            <div class="itemForm">
+                <label for="coord">Coordenador</label>
+                <input type="text" name="coord" id="coord" [(ngModel)]="cursoForm().coordenador">
+            </div>
+
+            <div class="itemForm">
+                <label for="caVinc">CA Vinculada</label>
+                <input type="text" name="caVinc" id="caVinc" [(ngModel)]="cursoForm().caVinculada">
+            </div>
+
+            <div class="itemForm campo-grande">
+                <label for="desc">Descrição</label>
+                <input type="desc" name="desc" id="desc" [(ngModel)]="cursoForm().descricao">
+            </div>
+
+            
+
+            <div class="itemForm">
+                <label for="status">Status</label>
+                <select name="status" id="status" [(ngModel)]="cursoForm().status">
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                </select>
+            </div>
+
+            <div class="itemForm multiselect">
+                <div class="opt">
+                    <label for="turno-mat">Matutino</label>
+                    <input type="checkbox" name="turno-mat" id="turno-mat"  [(ngModel)]="turnoMat">
+                </div>
+
+                <div class="opt">
+                    <label for="turno-ves">Vespertino</label>
+                    <input type="checkbox" name="turno-ves" id="turno-ves" [(ngModel)]="turnoVes">
+                </div>
+
+                <div class="opt">
+                    <label for="turno-not">Noturno</label>
+                    <input type="checkbox" name="turno-not" id="turno-not" [(ngModel)]="turnoNot" >
+                </div>
+            </div>
+
+            <div class="itemForm">
+                <label>Data de cadastramento: </label>
+                <time datetime="">{{cursoForm().dataCadastro.toLocaleDateString('pt-BR')}}</time>
+            </div>
+
+            
+
+            <div class="btn-group">
+                <button type="button" class="btn-cancelar" routerLink="/admin/curso">Cancelar</button>
+                <button type="submit">Salvar</button>
+            </div>
+        </form>
+    </section>
+
+</div>

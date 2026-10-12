@@ -12,7 +12,7 @@ export class AdminSidebarComponent {
   menuItens = [
     {label: 'Instituições (IES)', route: '/admin/ies'},
     {label: 'Centros Acadêmicos', route: '/admin/ca'},
-    {label: 'Cursos', route: '/admin/cursos'},
+    {label: 'Cursos', route: '/admin/curso'},
     {label: 'Docentes', route: '/admin/docentes'},
     {label: 'Usuários e Perfis', route: '/admin/usuarios'},
     {label: 'Auditoria', route: '/admin/auditoria'},

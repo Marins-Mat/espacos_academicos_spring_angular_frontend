@@ -45,7 +45,7 @@ export class CaService {
             coordenador: "Mariana Costa Ribeiro",
             IesVinculada: "UCSAL",
             status: "Inativo",
-            dataDeCadastramento: new Date(2021, 5, 4)
+            dataDeCadastramento: new Date(2026, 5, 4)
         },
         {
             id: 4,
@@ -55,7 +55,7 @@ export class CaService {
             coordenador: "Roberto Almeida Santos",
             IesVinculada: "UCSAL",
             status: "Ativo",
-            dataDeCadastramento: new Date(2020, 7, 30)
+            dataDeCadastramento: new Date(2023, 5, 6)
         }
     ])
 
