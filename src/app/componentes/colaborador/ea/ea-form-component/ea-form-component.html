@@ -1,0 +1,67 @@
+<div class="container">
+    <header class="cabecalho">
+        <h1>Novo Espaço Acadêmico</h1>
+    </header>
+
+    <section class="eas-container">
+        <form (ngSubmit)="salvar()">
+            <div class="itensGroup">
+                <div class="itemForm">
+                    <label for="sigla">Sigla</label>
+                    <input type="text" name="sigla" id="sigla" [(ngModel)]="eaForm().sigla">
+
+                </div>
+
+                <div class="itemForm campo-grande">
+                    <label for="nome">Nome</label>
+                    <input type="text" name="nome" id="nome" [(ngModel)]="eaForm().nome">
+                </div>
+                <div class="itemForm">
+                    <label for="tipo">Tipo</label>
+                    <select name="tipo" id="tipo" [(ngModel)]="eaForm().tipo">
+                        <option value="SALA">Sala</option>
+                        <option value="LABORATORIO">Laboratorio</option>
+                        <option value="AUDITORIO">Auditorio</option>
+                    </select>
+                </div>
+
+                <div class="itemForm">
+                    <label for="capacidadeMax">Capacidade Máxima</label>
+                    <input type="number" name="capacidadeMax" id="capacidadeMax" [(ngModel)]="eaForm().capacidadeMax">
+                </div>
+
+                <div class="itemForm campo-grande">
+                    <label for="localizacao">Localização</label>
+                    <input type="text" name="localizacao" id="localizacao" [(ngModel)]="eaForm().localizacao">
+                </div>
+
+                <div class="itemForm">
+                    <label for="status">Status</label>
+                    <select name="status" id="status" [(ngModel)]="eaForm().status">
+                        <option value="DISPONIVEL">Disponível</option>
+                        <option value="INDISPONIVEL">Indisponível</option>
+                    </select>
+                </div>
+
+
+                <div class="itemForm">
+                    <label>Data de cadastramento: </label>
+                    <time datetime="">{{eaForm().dataDeCadastramento.toLocaleDateString('pt-BR')}}</time>
+                </div>
+            </div>
+
+            <div class="itemForm descricao">
+                <label for="descricao">Descricao Complementar</label>
+                <input type="text" name="descricao" id="descricao" [(ngModel)]="eaForm().descricao">
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn-cancelar" routerLink="/colaborador/ea">Cancelar</button>
+                <button type="submit">Salvar</button>
+            </div>
+        </form>
+
+
+    </section>
+
+</div>

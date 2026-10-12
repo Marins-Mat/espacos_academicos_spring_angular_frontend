@@ -1,0 +1,13 @@
+div {
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.sidebar {
+    width: 18vw;
+}
+
+.conteudo-principal {
+    width: 82vw;
+}

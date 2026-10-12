@@ -14,6 +14,13 @@ import { CursoFormComponent } from './componentes/admin/curso/curso-form-compone
 import { DocenteParentComponent } from './componentes/admin/docentes/docente-parent-component/docente-parent-component';
 import { DocenteListComponent } from './componentes/admin/docentes/docente-list-component/docente-list-component';
 import { DocenteFormComponent } from './componentes/admin/docentes/docente-form-component/docente-form-component';
+import { ColaboradorPageComponent } from './pages/colaborador-page-component/colaborador-page-component';
+import { SolicitacoesParentComponent } from './componentes/colaborador/solicitacoes/solicitacoes-parent-component/solicitacoes-parent-component';
+import { SolicitacoesListComponent } from './componentes/colaborador/solicitacoes/solicitacoes-list-component/solicitacoes-list-component';
+import { SolicitacoesJustifyComponent } from './componentes/colaborador/solicitacoes/solicitacoes-justify-component/solicitacoes-justify-component';
+import { EaParentComponent } from './componentes/colaborador/ea/ea-parent-component/ea-parent-component';
+import { EaListComponent } from './componentes/colaborador/ea/ea-list-component/ea-list-component';
+import { EaFormComponent } from './componentes/colaborador/ea/ea-form-component/ea-form-component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -56,5 +63,26 @@ export const routes: Routes = [
             }
         ]
     },
+    {
+        path: 'colaborador', component: ColaboradorPageComponent,
+        children: [
+            { path: '', redirectTo: 'ea', pathMatch: 'full' },
+            {
+                path: 'solicitacoes', component: SolicitacoesParentComponent,
+                children: [
+                    { path: '', component: SolicitacoesListComponent },
+                    { path: 'justificativa/:id', component: SolicitacoesJustifyComponent }
+                ]
+            },
+            { path: 'ea' , component: EaParentComponent, 
+                children: [
+                    { path: '', component: EaListComponent},
+                    { path: 'novo', component: EaFormComponent},
+                    { path: 'editar/:id', component: EaFormComponent}
+                ]
+            }
+
+        ]
+    }
 
 ];
