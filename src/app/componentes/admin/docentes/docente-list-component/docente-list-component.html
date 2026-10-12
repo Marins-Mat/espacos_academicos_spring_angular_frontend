@@ -1,0 +1,64 @@
+<div class="container">
+    <header class="cabecalho">
+        <h1>Docentes</h1>
+
+        <button (click)="novoDocente()">Novo Docente</button>
+    </header>
+
+    <section class="docente-container">
+        <header class="filtros">
+            <div class="filtro">
+                <label for="nome">Buscar</label>
+                <input type="text" name="nome" id="nome" [(ngModel)]="filtroTexto" placeholder="Nome do Docente">
+            </div>
+
+            <div class="filtro">
+                <label for="status">Status</label>
+                <select id="status" name="status" [(ngModel)]="filtroStatus">
+                    <option value="Todos">Todos</option>
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                </select>
+            </div>
+
+        </header>
+
+        <div class="tabela-responsiva">
+            <table class="tabela-docentes">
+                <thead>
+                    <th>Nome</th>
+                    <th>CA Vinculada</th>
+                    <th>E-mail</th>
+                    <th>Telefone</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </thead>
+                <tbody>
+                    @for (docente of docentesFiltrados; track docente.matricula) {
+                    <tr>
+                        <td>{{docente.nome}}</td>
+                        <td>{{docente.caVinculada}}</td>
+                        <td>{{docente.email}}</td>
+                        <td>{{docente.telefone}}</td>
+                        @if (docente.status==="Ativo") {
+                        <td class="status-ativa">Ativo</td>
+                        } @else {
+                        <td class="status-inativa">Inativo</td>
+                        }
+                        <td class="acoes">
+                            <div class="btn-group-acoes">
+                                <button class="btn-acao" [routerLink]="['/admin/docentes/editar', docente.matricula]">Editar</button>
+                                <button class="btn-acao" (click)="alternarStatus(docente.matricula)">
+                                    {{ docente.status === 'Ativo' ? 'Inativar' : 'Reativar' }}
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    } @empty {
+                    <tr colspan="6" class="sem-resultados">Nenhum Docente encontrado.</tr>}
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+</div>

@@ -1,0 +1,49 @@
+<div class="container">
+    <header class="cabecalho">
+        <h1>Novo Docente</h1>
+    </header>
+
+    <section class="docente-container">
+        <form (ngSubmit)="salvar()">
+
+            <div class="itemForm campo-grande">
+                <label for="nome">Nome do Docente</label>
+                <input type="text" name="nome" id="nome" [(ngModel)]="docenteForm().nome">
+            </div>
+
+            <div class="itemForm">
+                <label for="caVinculada">CA Vinculada</label>
+                <input type="text" name="caVinculada" id="caVinculada" [(ngModel)]="docenteForm().caVinculada">
+            </div>
+
+            <div class="itemForm">
+                <label for="iesVinc">Telefone</label>
+                <input type="text" name="telefone" id="telefone" [(ngModel)]="docenteForm().telefone">
+            </div>
+
+            <div class="itemForm campo-grande">
+                <label for="">E-mail</label>
+                <input type="email" name="email" id="email" [(ngModel)]="docenteForm().email">
+            </div>
+
+            <div class="itemForm">
+                <label for="status">Status</label>
+                <select name="status" id="status" [(ngModel)]="docenteForm().status">
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                </select>
+            </div>
+
+            <div class="itemForm">
+                <label>Data de cadastramento: </label>
+                <time datetime="">{{docenteForm().dataCadastro.toLocaleDateString('pt-BR')}}</time>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn-cancelar" routerLink="/admin/docentes">Cancelar</button>
+                <button type="submit">Salvar</button>
+            </div>
+        </form>
+    </section>
+
+</div>
