@@ -1,0 +1,66 @@
+<div class="container">
+    <header class="cabecalho">
+        <h1>Cursos</h1>
+
+        <button (click)="novoCurso()">Novo Curso</button>
+    </header>
+
+    <section class="cursos-container">
+        <header class="filtros">
+            <div class="filtro">
+                <label for="nome">Buscar</label>
+                <input type="text" name="nome" id="nome" [(ngModel)]="filtroTexto" placeholder="Nome do Curso">
+            </div>
+
+            <div class="filtro">
+                <label for="status">Status</label>
+                <select id="status" name="status" [(ngModel)]="filtroStatus">
+                    <option value="Todos">Todos</option>
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                </select>
+            </div>
+
+        </header>
+
+        <div class="tabela-responsiva">
+            <table class="tabela-cursos">
+                <thead>
+                    <th>Sigla</th>
+                    <th>Coordenador</th>
+                    <th>CA Vinculada</th>
+                    <th>Descrição</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </thead>
+                <tbody>
+                    @for (curso of cursosFiltradas; track curso.id) {
+                    <tr>
+                        <td>{{curso.sigla}}</td>
+                        <td>{{curso.coordenador}}</td>
+                        <td>{{curso.caVinculada}}</td>
+                        <td>{{curso.descricao}}</td>
+                        @if (curso.status==="Ativo") {
+                        <td class="status-ativa">Ativo</td>
+                        } @else {
+                        <td class="status-inativa">Inativo</td>
+                        }
+                        <td class="acoes">
+                            <div class="btn-group-acoes">
+                                <button class="btn-acao" [routerLink]="['/admin/curso/editar', curso.id]">Editar</button>
+                                <button class="btn-acao" (click)="alternarStatus(curso.id)">
+                                    {{ curso.status === 'Ativo' ? 'Inativar' : 'Reativar' }}
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    } @empty {
+                    <tr colspan="6" class="sem-resultados">Nenhum Centro 
+                        Acadêmico encontrado.</tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+</div>

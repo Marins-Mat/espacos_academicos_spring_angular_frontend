@@ -1,0 +1,54 @@
+<div class="container">
+    <header class="cabecalho">
+        <h1>Novo Centro Acadêmico</h1>
+    </header>
+
+    <section class="cas-container">
+        <form (ngSubmit)="salvar()">
+
+            <div class="itemForm campo-grande">
+                <label for="nome">Nome do centro acadêmico</label>
+                <input type="text" name="nome" id="nome" [(ngModel)]="caForm().nome">
+            </div>
+
+            <div class="itemForm">
+                <label for="coord">Coordenador</label>
+                <input type="text" name="coord" id="coord" [(ngModel)]="caForm().coordenador">
+            </div>
+
+            <div class="itemForm">
+                <label for="iesVinc">Ies Vinculada</label>
+                <input type="text" name="iesVinc" id="iesVinc" [(ngModel)]="caForm().IesVinculada">
+            </div>
+
+            <div class="itemForm campo-grande">
+                <label for="">E-mail</label>
+                <input type="email" name="email" id="email" [(ngModel)]="caForm().email">
+            </div>
+
+            <div class="itemForm">
+                <label for="fone">Telefone</label>
+                <input type="text" name="fone" id="fone" [(ngModel)]="caForm().telefone">
+            </div>
+
+            <div class="itemForm">
+                <label for="status">Status</label>
+                <select name="status" id="status" [(ngModel)]="caForm().status">
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                </select>
+            </div>
+
+            <div class="itemForm">
+                <label>Data de cadastramento: </label>
+                <time datetime="">{{caForm().dataDeCadastramento.toLocaleDateString('pt-BR')}}</time>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn-cancelar" routerLink="/admin/ca">Cancelar</button>
+                <button type="submit">Salvar</button>
+            </div>
+        </form>
+    </section>
+
+</div>

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Ies, IesService } from '../../../services/admin/ies-service';
+import { Ies, IesService } from '../../../../services/admin/ies/ies-service';
 
 @Component({
   imports: [FormsModule, RouterLink],

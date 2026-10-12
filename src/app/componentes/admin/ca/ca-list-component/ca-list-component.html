@@ -1,0 +1,66 @@
+<div class="container">
+    <header class="cabecalho">
+        <h1>Centros Acadêmicos</h1>
+
+        <button (click)="novoCa()">Novo Centro</button>
+    </header>
+
+    <section class="cas-container">
+        <header class="filtros">
+            <div class="filtro">
+                <label for="nome">Buscar</label>
+                <input type="text" name="nome" id="nome" [(ngModel)]="filtroTexto" placeholder="Nome do Centro">
+            </div>
+
+            <div class="filtro">
+                <label for="status">Status</label>
+                <select id="status" name="status" [(ngModel)]="filtroStatus">
+                    <option value="Todos">Todos</option>
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                </select>
+            </div>
+
+        </header>
+
+        <div class="tabela-responsiva">
+            <table class="tabela-cas">
+                <thead>
+                    <th>Nome</th>
+                    <th>Coordenador</th>
+                    <th>IES Vinculada</th>
+                    <th>E-mail</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </thead>
+                <tbody>
+                    @for (ca of casFiltradas; track ca.id) {
+                    <tr>
+                        <td>{{ca.nome}}</td>
+                        <td>{{ca.coordenador}}</td>
+                        <td>{{ca.IesVinculada}}</td>
+                        <td>{{ca.email}}</td>
+                        @if (ca.status==="Ativo") {
+                        <td class="status-ativa">Ativo</td>
+                        } @else {
+                        <td class="status-inativa">Inativo</td>
+                        }
+                        <td class="acoes">
+                            <div class="btn-group-acoes">
+                                <button class="btn-acao" [routerLink]="['/admin/ca/editar', ca.id]">Editar</button>
+                                <button class="btn-acao" (click)="alternarStatus(ca.id)">
+                                    {{ ca.status === 'Ativo' ? 'Inativar' : 'Reativar' }}
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    } @empty {
+                    <tr colspan="6" class="sem-resultados">Nenhum Centro 
+                        Acadêmico encontrado.</tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+</div>
