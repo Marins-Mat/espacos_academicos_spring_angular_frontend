@@ -1,0 +1,110 @@
+.container {
+    width: 100%;
+    height: 100vh;
+    padding: 30px;
+    background-color: #F4F6F9;
+    box-sizing: border-box;
+}
+
+.cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.cabecalho h1 {
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.campoForm {
+    background-color: #ffffff;
+    max-width: 915px;
+    padding: 15px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: 400;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid #D9DFE7;
+    border-radius: 10px;
+
+}
+
+form {
+    max-width: 915px;
+}
+.itensGroup {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.itemForm {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    width: 250px;
+}
+
+.campo-grande {
+    width: 350px;
+}
+
+.itemForm label {
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.itemForm input {
+    height: 25px;
+}
+
+
+.itemForm select {
+    height: 25px;
+}
+
+.descricao {
+    width: 100%;
+}
+
+.btn-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.btn-group button {
+    background-color: #1F4E8C;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: 500;
+    width: 115px;
+    height: 40px;
+    margin: 7px;
+
+}
+
+.btn-group button:hover {
+    cursor: pointer;
+    border: 1px solid black;
+    background-color: #2b568f;
+}
+
+.btn-group .btn-cancelar {
+    background-color: #8c1f1f;
+}
+
+.btn-group .btn-cancelar:hover {
+    cursor: pointer;
+    border: 1px solid black;
+    background-color: #8b2929;
+}

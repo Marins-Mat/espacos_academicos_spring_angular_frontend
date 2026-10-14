@@ -1,0 +1,43 @@
+<div class="campoForm">
+                <header class="cabecalho">
+                    <h2>Laboratório de informática</h2>
+
+                    <button type="button" (click)="adicionarSoftware()">Adicionar Software</button>
+                </header>
+
+                <div class="itemForm descricao">
+                    <label for="tipoComps">Tipo dos computadores</label>
+                    <input type="text" name="tipoComps" id="tipoComps" [(ngModel)]="eaForm().tipo">
+                </div>
+
+                <div class="tabela-responsiva">
+                    <table class="tabela-softwares">
+                        <thead>
+                            <th>Software</th>
+                            <th>URL de download</th>
+                            <th>Tipo</th>
+                            <th>Objetivo</th>
+                            <th>Disciplinas</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            @for (soft of softsFiltrados; track soft.id) {
+                            <tr>
+                                <td>{{soft.nome}}</td>
+                                <td>{{soft.url}}</td>
+                                <td>{{soft.tipo}}</td>
+                                <td>{{soft.objetivo}}</td>
+                                <td>{{soft.disciplinas}}</td>
+                            </tr>
+                            } @empty {
+                            <tr colspan="6" class="sem-resultados">Nenhum software encontrado.</tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn-group">
+                    <button type="submit">Salvar</button>
+                    <button type="button" class="btn-cancelar" routerLink="/colaborador/ea">Cancelar</button>
+                </div>
+
+            </div>

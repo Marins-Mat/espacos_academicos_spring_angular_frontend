@@ -88,8 +88,4 @@ export class CaService {
             return atendeTexto && atendeStatus;
         })
     }
-
-
-
-
 }

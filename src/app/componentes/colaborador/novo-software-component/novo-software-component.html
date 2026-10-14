@@ -1,0 +1,59 @@
+<div class="container">
+    <header class="cabecalho">
+        <h1>Novo Software</h1>
+    </header>
+
+    <section class="software-container">
+        <form (ngSubmit)="salvar()">
+
+            <div class="campoForm">
+                <div class="itensGroup">
+                    <div class="itemForm campo-grande">
+                        <label for="url">URL</label>
+                        <input type="text" name="url" id="url" [(ngModel)]="softwareForm().url">
+
+                    </div>
+
+                    <div class="itemForm">
+                        <label for="disciplinas">Disciplinas que utilizarão: </label>
+                        <input type="text" name="disciplinas" id="disciplinas" [(ngModel)]="softwareForm().disciplinas">
+                    </div>
+
+                    <div class="itemForm campo-grande">
+                        <label for="nome">Nome</label>
+                        <input type="text" name="nome" id="nome" [(ngModel)]="softwareForm().nome">
+                    </div>
+
+                    <div class="itemForm">
+                        <label for="tipo">Tipo</label>
+                        <select name="tipo" id="tipo" [(ngModel)]="softwareForm().tipo">
+                            <option value="SOFTWARE_LIVRE">Software Livre</option>
+                            <option value="SOFTWARE_PROPRIETARIO">Software Proprietário</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="itemForm descricao">
+                    <label for="objetivo">Objetivo</label>
+                    <input type="text" name="objetivo" id="objetivo" [(ngModel)]="softwareForm().objetivo">
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit">Salvar</button>
+                    <button type="button" class="btn-cancelar" routerLink="/colaborador/ea">Cancelar</button>
+                </div>
+            </div>
+
+
+
+
+
+
+
+        </form>
+
+
+    </section>
+
+</div>

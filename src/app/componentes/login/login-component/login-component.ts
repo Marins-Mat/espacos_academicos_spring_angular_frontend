@@ -17,6 +17,6 @@ export class LoginComponent {
     console.log("E-mail digitado: ", this.email())
     console.log("Senha digitada: ", this.senha())
     
-    this.router.navigate(['admin'])
+    this.router.navigate(['colaborador'])
   }
 }
