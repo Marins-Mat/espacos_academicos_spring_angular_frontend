@@ -1,10 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { Ea, EaService } from '../../../../services/colaborador/ea-service';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, RouterOutlet],
   selector: 'app-ea-form-component',
   styleUrl: './ea-form-component.css',
   templateUrl: './ea-form-component.html',
@@ -17,16 +17,18 @@ export class EaFormComponent {
   isModoEditor = false;
 
   eaForm = signal<Ea>({
-      id: 0,
-      sigla: '',
-      nome: '',
-      tipo: 'SALA',
-      descricao: '',
-      capacidadeMax: 0,
-      localizacao: '',
-      status: 'DISPONIVEL',
-      dataDeCadastramento: new Date()
+    id: 0,
+    sigla: '',
+    nome: '',
+    tipo: 'SALA',
+    descricao: '',
+    capacidadeMax: 0,
+    localizacao: '',
+    status: 'DISPONIVEL',
+    dataDeCadastramento: new Date()
   })
+
+
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -45,8 +47,10 @@ export class EaFormComponent {
     }
   }
 
+
   salvar() {
-    if(this.isModoEditor) {
+
+    if (this.isModoEditor) {
       this.eaService.salvar(this.eaForm());
     } else {
       this.eaService.adicionar(this.eaForm());
@@ -54,4 +58,5 @@ export class EaFormComponent {
 
     this.router.navigate(['colaborador/ea']);
   }
+
 }

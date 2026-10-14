@@ -18,10 +18,11 @@
     font-weight: 600;
 }
 
-.eas-container {
+.campoForm {
     background-color: #ffffff;
     max-width: 915px;
-    padding: 25px;
+    padding: 15px;
+    margin-bottom: 10px;
     font-size: 15px;
     font-weight: 400;
     display: flex;
@@ -32,6 +33,9 @@
 
 }
 
+form {
+    max-width: 915px;
+}
 .itensGroup {
     display: flex;
     flex-wrap: wrap;
@@ -68,16 +72,12 @@
     width: 100%;
 }
 
-.descricao input {
-    height: 55px;
-}
-
 .btn-group {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     margin-bottom: 15px;
-    width: 250px;
+    width: 100%;
 }
 
 .btn-group button {

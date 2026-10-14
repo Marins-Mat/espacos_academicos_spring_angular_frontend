@@ -21,6 +21,8 @@ import { SolicitacoesJustifyComponent } from './componentes/colaborador/solicita
 import { EaParentComponent } from './componentes/colaborador/ea/ea-parent-component/ea-parent-component';
 import { EaListComponent } from './componentes/colaborador/ea/ea-list-component/ea-list-component';
 import { EaFormComponent } from './componentes/colaborador/ea/ea-form-component/ea-form-component';
+import { TabelaSoftwaresComponent } from './componentes/colaborador/tabela-softwares-component/tabela-softwares-component';
+import { NovoSoftwareComponent } from './componentes/colaborador/novo-software-component/novo-software-component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -74,11 +76,23 @@ export const routes: Routes = [
                     { path: 'justificativa/:id', component: SolicitacoesJustifyComponent }
                 ]
             },
-            { path: 'ea' , component: EaParentComponent, 
+            {
+                path: 'ea', component: EaParentComponent,
                 children: [
-                    { path: '', component: EaListComponent},
-                    { path: 'novo', component: EaFormComponent},
-                    { path: 'editar/:id', component: EaFormComponent}
+                    { path: '', component: EaListComponent },
+                    {
+                        path: 'novo', component: EaFormComponent,
+                        children: [
+                            { path: '', component: TabelaSoftwaresComponent },
+                            { path: 'software', component: NovoSoftwareComponent }
+                        ]
+                    },
+                    { path: 'editar/:id', component: EaFormComponent,
+                        children: [
+                            { path: '', component: TabelaSoftwaresComponent },
+                            { path: 'software', component: NovoSoftwareComponent }
+                        ]
+                     }
                 ]
             }
 
