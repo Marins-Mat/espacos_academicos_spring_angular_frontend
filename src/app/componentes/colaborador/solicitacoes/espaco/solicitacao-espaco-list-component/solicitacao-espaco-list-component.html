@@ -1,0 +1,48 @@
+<div class="container">
+    <header class="cabecalho">
+        <h1>Solicitações de espaços acadêmicos</h1>
+    </header>
+    <div class="solicitacoes-container">
+        <div class="tabela">
+            <table class="tabela-solicitacoes">
+                <th>Espaço solicitado</th>
+                <th>Solicitante</th>
+                <th>Data do agendamento</th>
+                <th>Hora de inicio</th>
+                <th>Hora de termino</th>
+                <th>Data da solicitação</th>
+                <th>Status da solicitação</th>
+                <th>Ações</th>
+
+                @for (solicitacao of solicitacoes; track solicitacao.id) {
+                <tr>
+                    <td>{{solicitacao.id_espaco}}</td>
+                    <td>{{solicitacao.id_solicitante}}</td>
+                    <td>{{solicitacao.inicio.toLocaleDateString('pt-BR')}}</td>
+                    <td>{{solicitacao.inicio.toLocaleTimeString('pt-BR')}}</td>
+                    <td>{{solicitacao.fim.toLocaleTimeString('pt-BR')}}</td>
+                    <td>{{solicitacao.data_solicitacao.toLocaleDateString('pt-BR')}}</td>
+                    <td>{{solicitacao.status}}</td>
+                    <td>
+                        <div class="btn-group">
+                            @if (solicitacao.status==='APROVADA') {
+                            --
+                            } @else if (solicitacao.status==='REPROVADA') {
+                            <button (click)="verJustificativa()" class="btn-acao">Justificativa</button>
+                            } @else {
+                            <button (click)="aprovarSolicitacao()" class="btn-acao">Aprovar</button>
+                            <button
+                                [routerLink]="['colaborador', 'solicitacoes_espaco', 'justificativa', solicitacao.id]"
+                                class="btn-acao btn-reprovar">Reprovar</button>
+                            }
+
+
+                        </div>
+                    </td>
+                </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+</div>

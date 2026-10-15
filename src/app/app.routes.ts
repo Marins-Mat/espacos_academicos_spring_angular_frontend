@@ -9,20 +9,22 @@ import { CaListComponent } from './componentes/admin/ca/ca-list-component/ca-lis
 import { CaFormComponent } from './componentes/admin/ca/ca-form-component/ca-form-component';
 import { CursoParentComponent } from './componentes/admin/curso/curso-parent-component/curso-parent-component';
 import { CursoListComponent } from './componentes/admin/curso/curso-list-component/curso-list-component';
-import { Component } from '@angular/core';
 import { CursoFormComponent } from './componentes/admin/curso/curso-form-component/curso-form-component';
 import { DocenteParentComponent } from './componentes/admin/docentes/docente-parent-component/docente-parent-component';
 import { DocenteListComponent } from './componentes/admin/docentes/docente-list-component/docente-list-component';
 import { DocenteFormComponent } from './componentes/admin/docentes/docente-form-component/docente-form-component';
 import { ColaboradorPageComponent } from './pages/colaborador-page-component/colaborador-page-component';
-import { SolicitacoesParentComponent } from './componentes/colaborador/solicitacoes/solicitacoes-parent-component/solicitacoes-parent-component';
-import { SolicitacoesListComponent } from './componentes/colaborador/solicitacoes/solicitacoes-list-component/solicitacoes-list-component';
-import { SolicitacoesJustifyComponent } from './componentes/colaborador/solicitacoes/solicitacoes-justify-component/solicitacoes-justify-component';
 import { EaParentComponent } from './componentes/colaborador/ea/ea-parent-component/ea-parent-component';
 import { EaListComponent } from './componentes/colaborador/ea/ea-list-component/ea-list-component';
 import { EaFormComponent } from './componentes/colaborador/ea/ea-form-component/ea-form-component';
 import { TabelaSoftwaresComponent } from './componentes/colaborador/tabela-softwares-component/tabela-softwares-component';
 import { NovoSoftwareComponent } from './componentes/colaborador/novo-software-component/novo-software-component';
+import { SolicitacaoEspacoParentComponent } from './componentes/colaborador/solicitacoes/espaco/solicitacao-espaco-parent-component/solicitacao-espaco-parent-component';
+import { SolicitacaoEspacoListComponent } from './componentes/colaborador/solicitacoes/espaco/solicitacao-espaco-list-component/solicitacao-espaco-list-component';
+import { SolicitacaoEspacoJustComponent } from './componentes/colaborador/solicitacoes/espaco/solicitacao-espaco-just-component/solicitacao-espaco-just-component';
+import { SolicitacaoSoftwareParentComponent } from './componentes/colaborador/solicitacoes/software/solicitacao-software-parent-component/solicitacao-software-parent-component';
+import { SolicitacaoSoftwareListComponent } from './componentes/colaborador/solicitacoes/software/solicitacao-software-list-component/solicitacao-software-list-component';
+import { SolicitacaoSoftwareJustComponent } from './componentes/colaborador/solicitacoes/software/solicitacao-software-just-component/solicitacao-software-just-component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -70,13 +72,6 @@ export const routes: Routes = [
         children: [
             { path: '', redirectTo: 'ea', pathMatch: 'full' },
             {
-                path: 'solicitacoes', component: SolicitacoesParentComponent,
-                children: [
-                    { path: '', component: SolicitacoesListComponent },
-                    { path: 'justificativa/:id', component: SolicitacoesJustifyComponent }
-                ]
-            },
-            {
                 path: 'ea', component: EaParentComponent,
                 children: [
                     { path: '', component: EaListComponent },
@@ -87,12 +82,27 @@ export const routes: Routes = [
                             { path: 'software', component: NovoSoftwareComponent }
                         ]
                     },
-                    { path: 'editar/:id', component: EaFormComponent,
+                    {
+                        path: 'editar/:id', component: EaFormComponent,
                         children: [
                             { path: '', component: TabelaSoftwaresComponent },
                             { path: 'software', component: NovoSoftwareComponent }
                         ]
-                     }
+                    }
+                ]
+            },
+            {
+                path: 'solicitacoes_espaco', component: SolicitacaoEspacoParentComponent,
+                children: [
+                    { path: '', component: SolicitacaoEspacoListComponent },
+                    { path: 'justificativa/:id', component: SolicitacaoEspacoJustComponent }
+                ]
+            },
+            {
+                path: 'solicitacoes_software', component: SolicitacaoSoftwareParentComponent,
+                children: [
+                    { path: '', component: SolicitacaoSoftwareListComponent },
+                    { path: 'justificativa/:id', component: SolicitacaoSoftwareJustComponent }
                 ]
             }
 

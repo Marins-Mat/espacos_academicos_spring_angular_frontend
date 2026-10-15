@@ -9,8 +9,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class ColaboradorSidebarComponent {
   menuItens = [
-    {label: 'Solicitações', route: '/colaborador/solicitacoes'},
-    {label: 'Espaços Acadêmicos', route: '/colaborador/ea'},
-    {label: 'Relatórios', route: '/colaborador/relatorios'}
+    { label: 'Espaços Acadêmicos', route: '/colaborador/ea' },
+    { label: 'Solicitações de espaço', route: '/colaborador/solicitacoes_espaco' },
+    { label: 'Solicitações de software', route: '/colaborador/solicitacoes_software' },
+    { label: 'Relatórios', route: '/colaborador/relatorios' }
   ]
 }
