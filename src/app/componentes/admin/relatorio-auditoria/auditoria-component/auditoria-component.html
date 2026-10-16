@@ -1,0 +1,32 @@
+<div class="container">
+    <header class="cabecalho">
+        <h1>Auditoria</h1>
+    </header>
+
+    <section class="auditoria-container">
+
+        <div class="tabela-responsiva">
+            <table class="tabela-auditoria">
+                <thead>
+                    <th>Data</th>
+                    <th>Ação</th>
+                    <th>Entidade</th>
+                    <th>Usuário</th>
+                </thead>
+                <tbody>
+                    @for (log of logs; track log.id) {
+                    <tr>
+                        <td>{{log.data_ocorrido}}</td>
+                        <td>{{log.acao}}</td>
+                        <td>{{log.entidade}}</td>
+                        <td>{{log.usario_nome}}</td>
+                    </tr>
+                    } @empty {
+                    <tr colspan="6" class="sem-resultados">Nenhum log encontrado.</tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+</div>
