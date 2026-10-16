@@ -35,6 +35,7 @@ import { SolicitacaoSoftwareUsuarioFormComponent } from './componentes/usuario/s
 import { SolicitacaoSoftwareUsuarioJustComponent } from './componentes/usuario/solicitacoes/solicitacao-software/solicitacao-software-usuario-just-component/solicitacao-software-usuario-just-component';
 import { SolicitacaoEspacoUsuarioJustComponent } from './componentes/usuario/solicitacoes/solicitacao-espaco/solicitacao-espaco-usuario-just-component/solicitacao-espaco-usuario-just-component';
 import { AuditoriaComponent } from './componentes/admin/relatorio-auditoria/auditoria-component/auditoria-component';
+import { authGuard } from './core/auth/auth-guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -75,8 +76,10 @@ export const routes: Routes = [
                     { path: 'editar/:id', component: DocenteFormComponent }
                 ]
             },
-            { path: 'auditoria', component: AuditoriaComponent}
-        ]
+            { path: 'auditoria', component: AuditoriaComponent }
+        ],
+        canActivate: [authGuard],
+        data: { roles: ['ADMINISTRADOR'] }
     },
     {
         path: 'colaborador', component: ColaboradorPageComponent,
@@ -125,7 +128,9 @@ export const routes: Routes = [
                 ]
             }
 
-        ]
+        ],
+        canActivate: [authGuard],
+        data: { roles: ['COLABORADOR'] }
     },
     {
         path: 'usuario', component: UsuarioPageComponent,
@@ -157,7 +162,9 @@ export const routes: Routes = [
                     }
                 ]
             }
-        ]
+        ],
+        canActivate: [authGuard],
+        data: { roles: ['USUARIO'] }
     }
 
 ];
