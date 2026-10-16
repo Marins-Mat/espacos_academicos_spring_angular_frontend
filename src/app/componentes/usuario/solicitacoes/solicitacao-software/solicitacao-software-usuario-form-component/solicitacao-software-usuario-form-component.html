@@ -1,0 +1,57 @@
+<div class="container">
+
+
+    <section class="solicitacao-container">
+
+        <header class="cabecalho">
+            @if(isModoEditor) {
+            <h1>Editar solicitacao</h1>
+            } @else {
+            <h1>Nova solicitação</h1>
+            }
+        </header>
+
+        <form ngSubmit="salvar()">
+            <div class="itens-group">
+
+                <div class="item-form">
+                    <label for="software">Software: </label>
+                    <input type="text" name="software" id="software">
+                </div>
+
+                <div class="item-form">
+                    <label for="url">URL: </label>
+                    <input type="text" name="url" id="url">
+                </div>
+
+                <div class="item-form">
+                    <label for="lab">Laboratorio: </label>
+                    <select name="lab" id="lab">
+                        @for (espaco of espacos; track espaco.id) {
+                        <option value="{{espaco.id}}">{{espaco.nome}}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="item-form">
+                    <label for="obj">Objetivo: </label>
+                    <input type="text" name="obj" id="obj">
+                </div>
+
+                <div class="item-form">
+                    <label for="disc">Disciplinas: </label>
+                    <input type="text" name="disc" id="disc">
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit">Salvar</button>
+                    <button type="button" class="btn-cancelar" routerLink="/usuario/solicitacoes_software">Cancelar</button>
+                </div>
+
+            </div>
+        </form>
+
+
+
+    </section>
+</div>

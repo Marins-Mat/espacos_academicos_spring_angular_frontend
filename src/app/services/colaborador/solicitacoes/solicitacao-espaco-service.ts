@@ -19,6 +19,7 @@ export interface solicitacao_espaco {
   data_solicitacao: Date;
   status: status_solicitacao_espaco;
   justificativa?: string;
+  id_avaliador?: number;
 }
 
 
@@ -33,7 +34,8 @@ export class SolicitacaoEspacoService {
       inicio: new Date(2026, 2, 13, 7, 0),
       fim: new Date(2026, 2, 13, 9, 30),
       data_solicitacao: new Date(2026, 2, 5),
-      status: "APROVADA"
+      status: "APROVADA",
+      id_avaliador: 2
     },
     {
       id: 2,
@@ -43,7 +45,8 @@ export class SolicitacaoEspacoService {
       fim: new Date(2026, 2, 13, 10, 0),
       data_solicitacao: new Date(2026, 2, 6),
       status: "REPROVADA",
-      justificativa: "Horário em conflito com outra reserva já aprovada para este espaço"
+      justificativa: "Horário em conflito com outra reserva já aprovada para este espaço",
+      id_avaliador: 1
     },
     {
       id: 3,
@@ -61,7 +64,8 @@ export class SolicitacaoEspacoService {
       inicio: new Date(2026, 2, 15, 19, 0),
       fim: new Date(2026, 2, 15, 21, 0),
       data_solicitacao: new Date(2026, 2, 9),
-      status: "APROVADA"
+      status: "APROVADA",
+      id_avaliador: 2
     },
     {
       id: 5,
@@ -71,7 +75,8 @@ export class SolicitacaoEspacoService {
       fim: new Date(2026, 2, 16, 16, 0),
       data_solicitacao: new Date(2026, 2, 10),
       status: "REPROVADA",
-      justificativa: "Espaço indisponível para uso por motivo de manutenção"
+      justificativa: "Espaço indisponível para uso por motivo de manutenção",
+      id_avaliador: 1
     },
     {
       id: 6,

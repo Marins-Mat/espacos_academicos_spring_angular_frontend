@@ -17,6 +17,7 @@ export interface solicitacao_software {
     status: status_solicitacao_software
     data_solicitacao: Date;
     justificativa?: string;
+    id_avaliador?: number;
 
 }
 
@@ -31,7 +32,8 @@ export class SolicitacaoSoftwareService {
             id_laboratorio: 1,
             objetivo: "Aulas de programação web no semestre",
             status: "APROVADA",
-            data_solicitacao: new Date(2026, 2, 3)
+            data_solicitacao: new Date(2026, 2, 3),
+            id_avaliador: 1
         },
         {
             id: 2,
@@ -49,7 +51,8 @@ export class SolicitacaoSoftwareService {
             id_laboratorio: 2,
             objetivo: "Análise de pacotes nas aulas de redes",
             status: "APROVADA",
-            data_solicitacao: new Date(2026, 2, 9)
+            data_solicitacao: new Date(2026, 2, 9),
+            id_avaliador: 1
         },
         {
             id: 4,
@@ -59,7 +62,8 @@ export class SolicitacaoSoftwareService {
             objetivo: "Simulação de sistemas de controle",
             status: "REPROVADA",
             data_solicitacao: new Date(2026, 2, 10),
-            justificativa: "Instituição não possui licença do software para este laboratório"
+            justificativa: "Instituição não possui licença do software para este laboratório",
+            id_avaliador: 2
         },
         {
             id: 5,

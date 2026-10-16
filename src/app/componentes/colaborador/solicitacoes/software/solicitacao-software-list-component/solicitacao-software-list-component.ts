@@ -6,7 +6,7 @@ import { SoftwareService } from '../../../../../services/colaborador/software-se
 
 
 @Component({
-  imports: [RouterLink, RouterOutlet],
+  imports: [RouterLink],
   selector: 'app-solicitacao-software-list-component',
   styleUrl: './solicitacao-software-list-component.css',
   templateUrl: './solicitacao-software-list-component.html',
