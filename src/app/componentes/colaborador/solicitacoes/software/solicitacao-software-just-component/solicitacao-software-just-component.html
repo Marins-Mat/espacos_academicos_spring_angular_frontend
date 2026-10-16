@@ -1,1 +1,19 @@
-<p>solicitacao-software-just-component works!</p>
+<div class="container">
+    <header class="cabecalho">
+        <h1>Justificativa</h1>
+    </header>
+
+    <div class="infos">
+        <p>Solicitação do software: {{software_nome()}}</p>
+        <p>Solicitante: {{solicitante_nome()}}</p>
+    </div>
+    @if (isModoEditor) {
+    <textarea name="justificativa" id="justificativa"></textarea>
+    <div class="btn">
+        <button (click)="salvarReprovacao()">Salvar</button>
+    </div>
+
+    } @else {
+    <p>{{justificativa()}}</p>
+    }
+</div>

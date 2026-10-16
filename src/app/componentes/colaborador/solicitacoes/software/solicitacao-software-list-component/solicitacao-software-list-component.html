@@ -15,8 +15,8 @@
 
                 @for (solicitacao of solicitacoes; track solicitacao.id) {
                 <tr>
-                    <td>{{solicitacao.id_software}}</td>
-                    <td>{{solicitacao.id_laboratorio}}</td>
+                    <td>{{softService.obterPorId(solicitacao.id_software)?.nome}}</td>
+                    <td>{{eaService.obterPorId(solicitacao.id_laboratorio)?.nome}}</td>
                     <td>{{solicitacao.id_solicitante}}</td>
                     <td>{{solicitacao.objetivo}}</td>
                     <td>{{solicitacao.data_solicitacao.toLocaleDateString('pt-BR')}}</td>
@@ -26,12 +26,14 @@
                             @if (solicitacao.status==='APROVADA') {
                             --
                             } @else if (solicitacao.status==='REPROVADA') {
-                            <button (click)="verJustificativa()" class="btn-acao">Justificativa</button>
+                            <button
+                                [routerLink]="['/colaborador', 'solicitacoes_software', 'justificativa', solicitacao.id]"
+                                class="btn-acao">Justificativa</button>
                             } @else {
                             <button (click)="aprovarSolicitacao()" class="btn-acao">Aprovar</button>
                             <button
-                                [routerLink]="['colaborador', 'solicitacoes_espaco', 'justificativa', solicitacao.id]"
-                                class="btn-acao btn-reprovar">Reprovar</button>
+                                [routerLink]="['/colaborador', 'solicitacoes_software', 'justificativa', solicitacao.id]"
+                                class="btn-acao">Reprovar</button>
                             }
 
 
@@ -42,5 +44,9 @@
             </table>
         </div>
     </div>
+    
+    <router-outlet></router-outlet>
+
+
 
 </div>

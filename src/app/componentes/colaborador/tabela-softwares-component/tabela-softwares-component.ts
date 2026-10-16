@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
-import { Ea, EaService, Software } from '../../../services/colaborador/ea-service';
+import { Ea, EaService } from '../../../services/colaborador/ea-service';
+import { Software } from '../../../services/colaborador/software-service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
