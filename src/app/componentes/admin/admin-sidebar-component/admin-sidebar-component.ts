@@ -1,4 +1,3 @@
-import { getLocaleNumberFormat } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -17,6 +16,4 @@ export class AdminSidebarComponent {
     {label: 'Auditoria', route: '/admin/auditoria'},
     {label: 'Relatórios', route: '/admin/relatorios'}
   ]
-
-
 }

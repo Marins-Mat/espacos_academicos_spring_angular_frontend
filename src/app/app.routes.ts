@@ -25,6 +25,15 @@ import { SolicitacaoEspacoJustComponent } from './componentes/colaborador/solici
 import { SolicitacaoSoftwareParentComponent } from './componentes/colaborador/solicitacoes/software/solicitacao-software-parent-component/solicitacao-software-parent-component';
 import { SolicitacaoSoftwareListComponent } from './componentes/colaborador/solicitacoes/software/solicitacao-software-list-component/solicitacao-software-list-component';
 import { SolicitacaoSoftwareJustComponent } from './componentes/colaborador/solicitacoes/software/solicitacao-software-just-component/solicitacao-software-just-component';
+import { UsuarioPageComponent } from './pages/usuario-page-component/usuario-page-component';
+import { SolicitacaoEspacoUsuarioParentComponent } from './componentes/usuario/solicitacoes/solicitacao-espaco/solicitacao-espaco-usuario-parent-component/solicitacao-espaco-usuario-parent-component';
+import { SolicitacaoSoftwareUsuarioParentComponent } from './componentes/usuario/solicitacoes/solicitacao-software/solicitacao-software-usuario-parent-component/solicitacao-software-usuario-parent-component';
+import { SolicitacaoEspacoUsuarioListComponent } from './componentes/usuario/solicitacoes/solicitacao-espaco/solicitacao-espaco-usuario-list-component/solicitacao-espaco-usuario-list-component';
+import { SolicitacaoEspacoUsuarioFormComponent } from './componentes/usuario/solicitacoes/solicitacao-espaco/solicitacao-espaco-usuario-form-component/solicitacao-espaco-usuario-form-component';
+import { SolicitacaoSoftwareUsuarioListComponent } from './componentes/usuario/solicitacoes/solicitacao-software/solicitacao-software-usuario-list-component/solicitacao-software-usuario-list-component';
+import { SolicitacaoSoftwareUsuarioFormComponent } from './componentes/usuario/solicitacoes/solicitacao-software/solicitacao-software-usuario-form-component/solicitacao-software-usuario-form-component';
+import { SolicitacaoSoftwareUsuarioJustComponent } from './componentes/usuario/solicitacoes/solicitacao-software/solicitacao-software-usuario-just-component/solicitacao-software-usuario-just-component';
+import { SolicitacaoEspacoUsuarioJustComponent } from './componentes/usuario/solicitacoes/solicitacao-espaco/solicitacao-espaco-usuario-just-component/solicitacao-espaco-usuario-just-component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -114,6 +123,38 @@ export const routes: Routes = [
                 ]
             }
 
+        ]
+    },
+    {
+        path: 'usuario', component: UsuarioPageComponent,
+        children: [
+            { path: '', redirectTo: 'solicitacoes_espaco', pathMatch: 'full' },
+            {
+                path: 'solicitacoes_espaco', component: SolicitacaoEspacoUsuarioParentComponent,
+                children: [
+                    {
+                        path: '', component: SolicitacaoEspacoUsuarioListComponent,
+                        children: [
+                            { path: 'novo', component: SolicitacaoEspacoUsuarioFormComponent },
+                            { path: 'editar/:id', component: SolicitacaoEspacoUsuarioFormComponent },
+                            { path: 'justificativa/:id', component: SolicitacaoEspacoUsuarioJustComponent }
+                        ]
+                    }
+                ]
+            },
+            {
+                path: 'solicitacoes_software', component: SolicitacaoSoftwareUsuarioParentComponent,
+                children: [
+                    {
+                        path: '', component: SolicitacaoSoftwareUsuarioListComponent,
+                        children: [
+                            { path: 'novo', component: SolicitacaoSoftwareUsuarioFormComponent },
+                            { path: 'editar/:id', component: SolicitacaoSoftwareUsuarioFormComponent },
+                            { path: 'justificativa/:id', component: SolicitacaoSoftwareUsuarioJustComponent }
+                        ]
+                    }
+                ]
+            }
         ]
     }
 

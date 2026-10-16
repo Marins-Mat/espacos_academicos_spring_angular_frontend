@@ -1,0 +1,79 @@
+.container {
+    width: 100%;
+    height: 100vh;
+    padding: 30px;
+    background-color: #F4F6F9;
+    box-sizing: border-box;
+}
+
+.cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.cabecalho h1 {
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.solicitacoes-container {
+    background-color: #ffffff;
+    padding: 25px;
+    border: 1px solid #D9DFE7;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.tabela {
+    width: 100%;
+    text-align: left;
+    max-height: 35vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #1F4E8C #ffffff;
+}
+
+.tabela-solicitacoes {
+    width: 100%;
+    color: #5B6675;
+    border-spacing: 0;    
+}
+
+.tabela-solicitacoes th {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 8px;
+    margin-top: 15px;
+    border-bottom: 1px solid #D9DFE7;
+
+}
+
+.tabela-solicitacoes td {
+    font-size: 14px;
+    font-weight: 400;
+    padding: 12px 8px;
+    border-bottom: 1px solid #D9DFE7;
+}
+
+.btn-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-acao:first-child {
+    margin-bottom: 2px;
+}
+
+.btn-acao {
+    background-color: #ffffff;
+    color: #1F4E8C;
+    border: 1px solid #1F4E8C;
+    border-radius: 7px;
+}
+
+.btn-group .btn-acao:hover {
+    cursor: pointer;
+    border: 1px solid black
+}

@@ -1,0 +1,12 @@
+<div class="container">
+    <h1>Espaços Acadêmicos </h1>
+    <h2>Usuário</h2>
+
+    <nav>
+        @for (item of menuItens; track item.label) {
+            <a [routerLink]="item.route" routerLinkActive="active" class="itemMenu">
+                {{item.label}}
+            </a>
+        }
+    </nav>
+</div>
