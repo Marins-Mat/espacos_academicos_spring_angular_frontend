@@ -6,11 +6,11 @@
             <div class="inputs-box">
                 <div>
                     <label for="email">E-mail: </label>
-                    <input type="email" name="email" id="emailinput" [(ngModel)]="email" required>
+                    <input type="email" name="email" id="emailinput" [(ngModel)]="request().login" required>
                 </div>
                 <div>
                     <label for="password">Senha: </label>
-                    <input type="password" name="pass" id="passinput" [(ngModel)]="senha" required>
+                    <input type="password" name="pass" id="passinput" [(ngModel)]="request().senha" required>
                 </div>
 
             </div>
