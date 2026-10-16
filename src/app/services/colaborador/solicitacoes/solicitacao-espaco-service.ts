@@ -18,6 +18,7 @@ export interface solicitacao_espaco {
   fim: Date;
   data_solicitacao: Date;
   status: status_solicitacao_espaco;
+  justificativa?: string;
 }
 
 
@@ -41,7 +42,8 @@ export class SolicitacaoEspacoService {
       inicio: new Date(2026, 2, 13, 8, 0),
       fim: new Date(2026, 2, 13, 10, 0),
       data_solicitacao: new Date(2026, 2, 6),
-      status: "REPROVADA"
+      status: "REPROVADA",
+      justificativa: "Horário em conflito com outra reserva já aprovada para este espaço"
     },
     {
       id: 3,
@@ -68,7 +70,8 @@ export class SolicitacaoEspacoService {
       inicio: new Date(2026, 2, 16, 14, 0),
       fim: new Date(2026, 2, 16, 16, 0),
       data_solicitacao: new Date(2026, 2, 10),
-      status: "REPROVADA"
+      status: "REPROVADA",
+      justificativa: "Espaço indisponível para uso por motivo de manutenção"
     },
     {
       id: 6,
@@ -80,5 +83,9 @@ export class SolicitacaoEspacoService {
       status: "PENDENTE"
     }
   ])
+
+  obterPorId(id: number) : solicitacao_espaco | undefined {
+    return this.solicitacoes_espaco().find(sol => sol.id === id);
+  }
 
 }

@@ -1,0 +1,68 @@
+.container {
+    box-sizing: border-box;
+    background-color: #ffffff;
+    padding: 15px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: 400;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid #D9DFE7;
+    border-radius: 10px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0 0 0 0;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+textarea {
+    resize: none;
+    field-sizing: content;
+    min-height: 100px;
+    max-height: 300px;
+}
+
+.infos {
+    display: flex;
+
+}
+
+.infos p {
+    margin-right: 35px;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.btn button {
+    background-color: #1F4E8C;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: 500;
+    width: 115px;
+    height: 40px;
+    margin: 7px;
+
+}
+
+.btn button:hover {
+    cursor: pointer;
+    border: 1px solid black;
+    background-color: #2b568f;
+}

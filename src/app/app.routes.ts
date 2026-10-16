@@ -94,15 +94,23 @@ export const routes: Routes = [
             {
                 path: 'solicitacoes_espaco', component: SolicitacaoEspacoParentComponent,
                 children: [
-                    { path: '', component: SolicitacaoEspacoListComponent },
-                    { path: 'justificativa/:id', component: SolicitacaoEspacoJustComponent }
+                    {
+                        path: '', component: SolicitacaoEspacoListComponent,
+                        children: [
+                            { path: 'justificativa/:id', component: SolicitacaoEspacoJustComponent }
+                        ]
+                    }
                 ]
             },
             {
                 path: 'solicitacoes_software', component: SolicitacaoSoftwareParentComponent,
                 children: [
-                    { path: '', component: SolicitacaoSoftwareListComponent },
-                    { path: 'justificativa/:id', component: SolicitacaoSoftwareJustComponent }
+                    {
+                        path: '', component: SolicitacaoSoftwareListComponent,
+                        children: [
+                            { path: 'justificativa/:id', component: SolicitacaoSoftwareJustComponent }
+                        ]
+                    }
                 ]
             }
 

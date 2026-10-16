@@ -16,6 +16,8 @@ export interface solicitacao_software {
     objetivo: string;
     status: status_solicitacao_software
     data_solicitacao: Date;
+    justificativa?: string;
+
 }
 
 @Service()
@@ -27,45 +29,52 @@ export class SolicitacaoSoftwareService {
             id_software: 1,
             id_solicitante: 20260001,
             id_laboratorio: 1,
-            objetivo: "Usar o editor nas aulas práticas de programação web",
+            objetivo: "Aulas de programação web no semestre",
             status: "APROVADA",
-            data_solicitacao: new Date(2026, 2, 5)
+            data_solicitacao: new Date(2026, 2, 3)
         },
         {
             id: 2,
-            id_software: 2,
+            id_software: 3,
             id_solicitante: 20260002,
             id_laboratorio: 1,
-            objetivo: "Desenvolver a API em Java e Spring durante as aulas",
+            objetivo: "Prática de modelagem e consultas SQL",
             status: "PENDENTE",
             data_solicitacao: new Date(2026, 2, 8)
         },
         {
             id: 3,
-            id_software: 3,
-            id_solicitante: 20260003,
-            id_laboratorio: 1,
-            objetivo: "Praticar modelagem e consultas SQL em sala",
+            id_software: 4,
+            id_solicitante: 20260006,
+            id_laboratorio: 2,
+            objetivo: "Análise de pacotes nas aulas de redes",
             status: "APROVADA",
             data_solicitacao: new Date(2026, 2, 9)
         },
         {
             id: 4,
-            id_software: 4,
-            id_solicitante: 20260006,
-            id_laboratorio: 2,
-            objetivo: "Capturar e analisar pacotes nas aulas de redes",
-            status: "PENDENTE",
-            data_solicitacao: new Date(2026, 2, 10)
+            id_software: 5,
+            id_solicitante: 20260007,
+            id_laboratorio: 6,
+            objetivo: "Simulação de sistemas de controle",
+            status: "REPROVADA",
+            data_solicitacao: new Date(2026, 2, 10),
+            justificativa: "Instituição não possui licença do software para este laboratório"
         },
         {
             id: 5,
-            id_software: 5,
-            id_solicitante: 20260006,
-            id_laboratorio: 6,
-            objetivo: "Simular sistemas de controle nas aulas de automação",
-            status: "REPROVADA",
+            id_software: 2,
+            id_solicitante: 20260003,
+            id_laboratorio: 1,
+            objetivo: "Desenvolvimento Java com Spring em projetos da disciplina",
+            status: "PENDENTE",
             data_solicitacao: new Date(2026, 2, 11)
         }
     ])
+
+
+    obterPorId(id: number) : solicitacao_software | undefined{
+        return this.solicitacoes_software().find(sol => sol.id === id);
+    }
+    
 }

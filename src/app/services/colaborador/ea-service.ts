@@ -1,20 +1,6 @@
 import { Service, signal } from '@angular/core';
+import { Software } from './software-service';
 
-export const TipoSoftware = {
-  SOFTWARE_LIVRE: 'SOFTWARE_LIVRE',
-  SOFTWARE_PROPRIETARIO: 'SOFTWARE_PROPRIETARIO'
-} as const;
-
-export type TipoSoftware = typeof TipoSoftware[keyof typeof TipoSoftware]
-
-export interface Software {
-  id: number;
-  url: string;
-  nome: string;
-  tipo: TipoSoftware;
-  objetivo: string;
-  disciplinas: string;
-}
 
 export const TipoEspaco = {
   LABORATORIO: 'LABORATORIO',

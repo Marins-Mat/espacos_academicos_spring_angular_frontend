@@ -1,9 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { solicitacao_espaco, SolicitacaoEspacoService } from '../../../../../services/colaborador/solicitacoes/solicitacao-espaco-service';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { EaService } from '../../../../../services/colaborador/ea-service';
 
 @Component({
-  imports: [RouterLink],
+  imports: [RouterLink, RouterOutlet],
   selector: 'app-solicitacao-espaco-list-component',
   styleUrl: './solicitacao-espaco-list-component.css',
   templateUrl: './solicitacao-espaco-list-component.html',
@@ -11,20 +12,14 @@ import { RouterLink } from '@angular/router';
 export class SolicitacaoEspacoListComponent {
 
   solicitacaoService = inject(SolicitacaoEspacoService)
-  
+  eaService = inject(EaService)
 
   get solicitacoes() : solicitacao_espaco[] {
     return this.solicitacaoService.solicitacoes_espaco();
   }
 
   aprovarSolicitacao() {
-
+    console.log("Aprovada")
   }
-
-
-  verJustificativa() {
-
-  }
-
 
 }

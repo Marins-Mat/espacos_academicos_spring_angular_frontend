@@ -23,14 +23,13 @@
     padding: 25px;
     border: 1px solid #D9DFE7;
     border-radius: 10px;
-
+    margin-bottom: 10px;
 }
 
 .tabela {
-    margin-top: 20px;
     width: 100%;
     text-align: left;
-    max-height: 50vh;
+    max-height: 35vh;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #1F4E8C #ffffff;
