@@ -1,6 +1,10 @@
 <div class="container">
     <header class="cabecalho">
-        <h1>Novo Centro Acadêmico</h1>
+        @if(isModoEditor) {
+        <h1>Editar Centro</h1>
+        }@else {
+        <h1>Novo Centro</h1>
+        }
     </header>
 
     <section class="cas-container">
@@ -13,37 +17,42 @@
 
             <div class="itemForm">
                 <label for="coord">Coordenador</label>
-                <input type="text" name="coord" id="coord" [(ngModel)]="caForm().coordenador">
+                <input type="text" name="coord" id="coord" [(ngModel)]="caForm().nomeCoordenador">
             </div>
 
             <div class="itemForm">
                 <label for="iesVinc">Ies Vinculada</label>
-                <input type="text" name="iesVinc" id="iesVinc" [(ngModel)]="caForm().IesVinculada">
+                <select name="iesVinc" id="iesVinc">
+                    @for (ies of instituicoes(); track ies.id) {
+                    <option value="{{ies.id}}">{{ies.sigla}}</option>
+                    }
+                </select>
             </div>
 
             <div class="itemForm campo-grande">
                 <label for="">E-mail</label>
-                <input type="email" name="email" id="email" [(ngModel)]="caForm().email">
+                <input type="email" name="email" id="email" [(ngModel)]="caForm().emailCentral">
             </div>
 
             <div class="itemForm">
                 <label for="fone">Telefone</label>
-                <input type="text" name="fone" id="fone" [(ngModel)]="caForm().telefone">
+                <input type="text" name="fone" id="fone" [(ngModel)]="caForm().telefoneCentral">
             </div>
+
+            @if (isModoEditor) {
 
             <div class="itemForm">
                 <label for="status">Status</label>
-                <select name="status" id="status" [(ngModel)]="caForm().status">
-                    <option value="Ativo">Ativo</option>
-                    <option value="Inativo">Inativo</option>
-                </select>
+                <input type="text" id="status" name="status" [(ngModel)]="caForm().status" readonly>
             </div>
 
             <div class="itemForm">
-                <label>Data de cadastramento: </label>
-                <time datetime="">{{caForm().dataDeCadastramento.toLocaleDateString('pt-BR')}}</time>
+                <label for="data">Data de cadastramento: </label>
+                <input type="date" id="data" name="dataCadastramento" [ngModel]="caForm().dataCadastramento"
+                    (ngModelChange)="caForm.set({ ...caForm(), dataCadastramento: $event })" readonly>
             </div>
 
+            }
             <div class="btn-group">
                 <button type="button" class="btn-cancelar" routerLink="/admin/ca">Cancelar</button>
                 <button type="submit">Salvar</button>

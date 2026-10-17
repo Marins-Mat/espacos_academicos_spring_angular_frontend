@@ -1,6 +1,10 @@
 <div class="container">
     <header class="cabecalho">
+        @if(isModoEditor) {
+        <h1>Editar Espaço Acadêmico</h1>
+        }@else {
         <h1>Novo Espaço Acadêmico</h1>
+        }
     </header>
 
     <section class="eas-container">
@@ -62,14 +66,7 @@
                     <button type="button" class="btn-cancelar" routerLink="/colaborador/ea">Cancelar</button>
                 </div>
             }
-
-
-
-
-
         </form>
-
-
     </section>
 
 </div>

@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Curso, CursoService } from '../../../../services/admin/curso/curso-service';
 import { FormsModule } from '@angular/forms';
+import { Ca, CaService } from '../../../../services/admin/ca/ca-service';
 
 @Component({
   imports: [FormsModule, RouterLink],
@@ -13,67 +14,62 @@ export class CursoFormComponent {
   route = inject(ActivatedRoute);
   router = inject(Router);
   cursoService = inject(CursoService);
+  caService = inject(CaService)
 
   isModoEditor = false;
 
-  turnoMat = signal<Boolean>(false)
-  turnoVes = signal<Boolean>(false)
-  turnoNot = signal<Boolean>(false)
-
-
 
   cursoForm = signal<Curso>({
-    id: 0,
     sigla: '',
-    coordenador: '',
-    caVinculada: '',
+    nomeCoordenador: '',
+    centroAcademicoId: 1,
+    centroAcademicoNome: '',
     descricao: '',
-    status: 'Ativo',
-    turnos: [this.turnoMat(), this.turnoVes(), this.turnoNot()],
-    dataCadastro: new Date()
+    turno: 'INTEGRAL',
   })
 
   ngOnInit(): void {
-
-
     const idParam = this.route.snapshot.paramMap.get('id');
+
     if (idParam) {
       const id = Number(idParam);
-      const cursoEncontrado = this.cursoService.obterPorId(id);
+      this.isModoEditor = true;
 
-      if (cursoEncontrado) {
+      this.cursoService.obterPorId(id).subscribe({
+        next: (cursoEncontrada: Curso) => {
 
-        this.isModoEditor = true;
-        this.cursoForm.set({ ...cursoEncontrado });
+          let dataFormatada: any = cursoEncontrada.dataCadastramento;
+          if (dataFormatada) {
+            dataFormatada = new Date(dataFormatada).toISOString().split('T')[0];
+          }
 
-        if (cursoEncontrado.turnos) {
-          this.turnoMat.set(cursoEncontrado.turnos[0] ?? false);
-          this.turnoVes.set(cursoEncontrado.turnos[1] ?? false);
-          this.turnoNot.set(cursoEncontrado.turnos[2] ?? false);
+          this.cursoForm.set({
+            id: cursoEncontrada.id,
+            sigla: cursoEncontrada.sigla,
+            nomeCoordenador: cursoEncontrada.nomeCoordenador,
+            centroAcademicoId: cursoEncontrada.centroAcademicoId,
+            centroAcademicoNome: cursoEncontrada.centroAcademicoNome,
+            descricao: cursoEncontrada.descricao,
+            turno: cursoEncontrada.turno,
+            dataCadastramento: dataFormatada,
+            status: cursoEncontrada.status
+          })
         }
-      } else {
-        this.router.navigate(['admin/curso']);
-      }
-
+      })
     }
   }
 
-  salvar(): void {
-    const turnosAtualizados = [
-      this.turnoMat(),
-      this.turnoVes(),
-      this.turnoNot()
-    ];
+  centros(): Ca[] {
+      this.caService.carregarTodas().subscribe();
+      return this.caService.listaCas();
+    }
 
-    const cursoParaSalvar: Curso = {
-      ...this.cursoForm(),
-      turnos: turnosAtualizados
-    };
+  salvar() {
 
     if (this.isModoEditor) {
-      this.cursoService.salvar(cursoParaSalvar);
+      this.cursoService.salvar(this.cursoForm()).subscribe();;
     } else {
-      this.cursoService.adicionar(cursoParaSalvar);
+      this.cursoService.adicionar(this.cursoForm()).subscribe();
     }
 
     this.router.navigate(['admin/curso']);

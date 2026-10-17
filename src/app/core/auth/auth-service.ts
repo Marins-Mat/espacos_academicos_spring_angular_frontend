@@ -1,5 +1,5 @@
 import { inject, Service } from '@angular/core';
-import { PerfilAcesso } from '../../usuario-service';
+import { PerfilAcesso } from '../../services/usuario-service';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 export interface LoginRequest {

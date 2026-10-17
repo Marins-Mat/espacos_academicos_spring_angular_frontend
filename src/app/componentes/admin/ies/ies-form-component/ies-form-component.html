@@ -1,6 +1,10 @@
 <div class="container">
     <header class="cabecalho">
-        <h1>Nova Instituição</h1>
+        @if(isModoEditor) {
+        <h1>Editar IES</h1>
+        }@else {
+        <h1>Novo IES</h1>
+        }
     </header>
 
     <section class="ies-container">
@@ -15,37 +19,51 @@
             <div class="itemForm campo-grande">
                 <label for="nome">Nome</label>
                 <input type="text" name="nome" id="nome" [(ngModel)]="iesForm().nome">
-            </div> 
-
-            <!--Reitor deveria ser um select com os docentes cadastrados?-->
+            </div>
 
             <div class="itemForm">
                 <label for="reitor">Reitor</label>
-                <input type="text" name="reitor" id="reitor" [(ngModel)]="iesForm().reitor">
+                <input type="text" name="reitor" id="reitor" [(ngModel)]="iesForm().nomeReitor">
             </div>
+
             <div class="itemForm">
-                <label for="telefone">Telefone Central</label>
-                <input type="text" name="telefone" id="telefone" [(ngModel)]="iesForm().telefone">
-            </div>
-            <div class="itemForm campo-grande">
-                <label for="email">E-mail Central</label>
-                <input type="email" name="email" id="email" [(ngModel)]="iesForm().email">
-            </div>
-            <div  class="itemForm">
-                <label for="status" >Status</label>
-                <select name="status" id="status" [(ngModel)]="iesForm().status">
-                    <option value="Ativa">Ativa</option>
-                    <option value="Inativa">Inativa</option>
+                <label for="proreitoria">Pro-Reitorias</label>
+                <select name="proreitoria" id="proreitoria" [(ngModel)]="iesForm().proReitorias">
+                    <option value="" disabled>Selecione uma pró-reitoria</option>
+                    @for (proReitoria of proReitorias; track proReitoria.id) {
+                        <option value="{{proReitoria.id}}" disabled >{{proReitoria.nome}} </option>
+                    }
                 </select>
             </div>
-            <div  class="itemForm">
-                <label for="data">Data de cadastramento: </label>
-                <time datetime="">{{iesForm().data.toLocaleDateString('pt-BR')}}</time>
+
+            <div class="itemForm">
+                <label for="telefone">Telefone Central</label>
+                <input type="text" name="telefone" id="telefone" [(ngModel)]="iesForm().telefoneCentral">
             </div>
+
+            <div class="itemForm campo-grande">
+                <label for="email">E-mail Central</label>
+                <input type="email" name="email" id="email" [(ngModel)]="iesForm().emailCentral">
+            </div>
+
+            @if(isModoEditor) {
+            <div class="itemForm">
+                <label for="status">Status</label>
+                <input type="text" id="status" name="status" [(ngModel)]="iesForm().status" readonly>
+            </div>
+
+            <div class="itemForm">
+                <label for="data">Data de cadastramento: </label>
+                <input type="date" id="data" name="dataCadastramento" [ngModel]="iesForm().dataCadastramento"
+                    (ngModelChange)="iesForm.set({ ...iesForm(), dataCadastramento: $event })" readonly>
+            </div>
+            }
+
             <div class="btnForm">
                 <button type="button" class="btn-cancelar" routerLink="/admin/ies">Cancelar</button>
                 <button type="submit">Salvar</button>
             </div>
+
         </form>
 
     </section>

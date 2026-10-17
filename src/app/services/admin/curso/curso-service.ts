@@ -1,87 +1,72 @@
-import { Service, signal } from '@angular/core';
+import { inject, Service, signal } from '@angular/core';
+import { StatusCadastro } from '../../usuario-service';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Observable, tap } from 'rxjs';
+
+export const Turno = {
+    MATUTINO: 'MATUTINO',
+    VESPERTINO: 'VESPERTINO',
+    NOTURNO: 'NOTURNO',
+    INTEGRAL: 'INTEGRAL'
+} as const
+
+export type Turno = typeof Turno[keyof typeof Turno]
+
 
 export interface Curso {
-    id: number;
+    id?: number;
     sigla: string;
     descricao: string;
-    caVinculada: string;
-    coordenador: string;
-    turnos: Boolean[];
-    status: 'Ativo' | 'Inativo';
-    dataCadastro: Date;
+    centroAcademicoId: number;
+    centroAcademicoNome: string;
+    nomeCoordenador: string;
+    turno: Turno;
+    status?: StatusCadastro;
+    dataCadastramento?: Date;
 }
 
 @Service()
 export class CursoService {
+    private http = inject(HttpClient)
+    private apiUrl = 'http://localhost:8080/api/cursos'
+    private router = inject(Router)
 
-    listaCurso = signal<Curso[]>([
-        {
-            id: 1,
-            sigla: "BES",
-            descricao: "Bacharelado em Engenharia de Software",
-            caVinculada: "CCET",
-            coordenador: "Roberto Almeida Santos",
-            turnos: [true, true, false],
-            dataCadastro: new Date(2026, 3, 10),
-            status: "Ativo"
-        },
-        {
-            id: 2,
-            sigla: "DIR",
-            descricao: "Direito",
-            caVinculada: "CCET",
-            coordenador: "Helena Martins Barreto",
-            turnos: [true, true, false],
-            dataCadastro: new Date(2026, 3, 10),
-            status: "Ativo"
-        },
-        {
-            id: 3,
-            sigla: "ADS",
-            descricao: "Tecnológico em Análise e Desenvolvimento de Sistemas",
-            caVinculada: "CCET",
-            coordenador: "Lucas Gabriel Nogueira",
-            turnos: [false, false, true],
-            dataCadastro: new Date(2026, 3, 12),
-            status: "Ativo"
-        },
-        {
-            id: 4,
-            sigla: "CC",
-            descricao: "Ciência da Computação",
-            caVinculada: "CTC",
-            coordenador: "Paulo Henrique Duarte",
-            turnos: [true, true, false],
-            dataCadastro: new Date(2026, 3, 15),
-            status: "Ativo"
-        },
-        {
-            id: 5,
-            sigla: "ECA",
-            descricao: "Engenharia de Controle e Automação",
-            caVinculada: "CTC",
-            coordenador: "Renata Vasconcelos Lopes",
-            turnos: [true, false, false],
-            dataCadastro: new Date(2026, 3, 15),
-            status: "Inativo"
-        }
-    ])
 
-    obterPorId(id: Number): Curso | undefined {
-        return this.listaCurso().find(curso => curso.id === id);
+    listaCurso = signal<Curso[]>([])
+
+    carregarTodos(): Observable<Curso[]> {
+        return this.http.get<Curso[]>(this.apiUrl).pipe(tap(dados => this.listaCurso.set(dados)))
     }
 
-    salvar(cursoAtualizado: Curso) {
-        this.listaCurso.update(listaCurso => this.listaCurso().map(curso => curso.id === cursoAtualizado.id ? cursoAtualizado : curso))
+    obterPorId(id: Number): Observable<Curso> {
+        return this.http.get<Curso>(`${this.apiUrl}/${id}`)
     }
 
-    adicionar(novoCurso: Omit<Curso, 'id'>) {
-        const novoId = this.listaCurso().length + 1;
-        this.listaCurso.update(listaCurso => [...listaCurso, { ...novoCurso, id: novoId }])
+    salvar(cursoAtualizado: Curso): Observable<Curso> {
+        return this.http.put<Curso>(`${this.apiUrl}/${cursoAtualizado.id}`, cursoAtualizado).pipe(tap(cursoSalvo => {
+            this.listaCurso.update(lista => lista.map(item => item.id === cursoSalvo.id ? cursoSalvo : item))
+        }))
     }
 
-    alterarStatus(id: number) {
-        this.listaCurso.update(listaCurso => listaCurso.map(curso => curso.id === id ? { ...curso, status: curso.status === 'Ativo' ? 'Inativo' : 'Ativo' } : curso))
+    adicionar(novoCurso: Omit<Curso, 'id'>): Observable<Curso> {
+        return this.http.post<Curso>(this.apiUrl, novoCurso).pipe(
+            tap(cursoCriado => {
+                this.listaCurso.update(lista => [...lista, cursoCriado]);
+            }))
+
+    }
+
+    alterarStatus(id: number): Observable<void> {
+
+        const cursoAtual = this.listaCurso().find(curso => curso.id === id);
+
+        const acao = cursoAtual?.status === 'ATIVO' ? 'inativar' : 'reativar';
+
+
+        return this.http.patch<void>(`${this.apiUrl}/${id}/${acao}`, {}).pipe(
+            tap(() => this.carregarTodos().subscribe())
+        )
     }
 
     filtrar(filtroTexto: string, filtroStatus: string): Curso[] {

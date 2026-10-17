@@ -16,8 +16,8 @@
                 <label for="status">Status</label>
                 <select id="status" name="status" [(ngModel)]="filtroStatus">
                     <option value="Todos">Todos</option>
-                    <option value="Ativa">Ativa</option>
-                    <option value="Inativa">Inativa</option>
+                    <option value="ATIVO">Ativa</option>
+                    <option value="INATIVO">Inativa</option>
                 </select>
             </div>
 
@@ -34,13 +34,13 @@
                     <th>Ações</th>
                 </thead>
                 <tbody>
-                    @for (ies of iesFiltradas; track ies.id) {
+                    @for (ies of iesFiltradas(); track ies.id) {
                     <tr>
                         <td>{{ies.sigla}}</td>
                         <td>{{ies.nome}}</td>
-                        <td>{{ies.reitor}}</td>
-                        <td>{{ies.email}}</td>
-                        @if (ies.status==="Ativa") {
+                        <td>{{ies.nomeReitor}}</td>
+                        <td>{{ies.emailCentral}}</td>
+                        @if (ies.status==='ATIVO') {
                         <td class="status-ativa">Ativa</td>
                         } @else {
                         <td class="status-inativa">Inativa</td>
@@ -49,13 +49,13 @@
                             <div class="btn-group-acoes">
                                 <button class="btn-acao" [routerLink]="['/admin/ies/editar', ies.id]">Editar</button>
                                 <button class="btn-acao" (click)="alternarStatus(ies.id)">
-                                    {{ ies.status === 'Ativa' ? 'Inativar' : 'Reativar' }}
+                                    {{ ies.status === 'ATIVO' ? 'Inativar' : 'Ativar' }}
                                 </button>
                             </div>
                         </td>
                     </tr>
                     } @empty {
-                    <tr colspan="6" class="sem-resultados">Nenhuma IES encontrada.</tr>
+                    <td colspan="6" class="sem-resultados">Nenhuma IES encontrada.</td>
                     }
                 </tbody>
             </table>

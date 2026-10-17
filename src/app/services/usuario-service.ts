@@ -17,19 +17,22 @@ export type StatusCadastro = typeof StatusCadastro[keyof typeof StatusCadastro]
 
 
 export interface Usuario {
-    id: number,
+    id?: number,
     matricula: string,
-    nome: string,
+    nomeCompleto: string,
     email: string,
+    senha?: string,
     telefone: string,
-    DataCadastramento: Date,
-    status: StatusCadastro,
+    centroAcademicoId: number,
+    centroAcademicoNome?: string,
+    perfis: PerfilAcesso[],
+    dataCadastramento?: Date,
+    status?: StatusCadastro,
     motivoInativacao?: string,
-    ca_id: number,
-    ca_nome: string,
-    perfis: PerfilAcesso[]
 }
 
 
 @Service()
-export class UsuarioService { }
+export class UsuarioService { 
+    
+}

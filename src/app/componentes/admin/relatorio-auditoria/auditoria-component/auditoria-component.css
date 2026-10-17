@@ -33,6 +33,29 @@
     cursor: pointer;
 }
 
+.filtros {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.filtros .filtro {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+
+}
+
+.filtros .filtro input {
+    height: 35px;
+    margin-right: 25px;
+    margin-top: 5px;
+    border: 1px solid #8D99A8;
+    border-radius: 5px;
+    font-size: 15px;
+    padding-left: 8px;
+    box-sizing: border-box;
+}
+
 .auditoria-container {
     background-color: #ffffff;
     padding: 25px;

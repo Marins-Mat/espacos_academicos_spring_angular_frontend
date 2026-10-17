@@ -1,49 +1,69 @@
-import { Service, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Service, signal } from '@angular/core';
+import { Observable, tap } from 'rxjs';
+import { proreitoriaResponse } from '../proreitoria/reitoria';
+import { StatusCadastro } from '../../usuario-service';
 
 export interface Ies {
-    id: number;
+    id?: number;
     sigla: string;
     nome: string;
-    reitor: string;
-    telefone: string;
-    email: string;
-    status: 'Ativa' | 'Inativa';
-    data: Date;
+    emailCentral: string;
+    telefoneCentral: string;
+    nomeReitor: string;
+    dataCadastramento?: Date;
+    status?: StatusCadastro;
+    proReitorias: proreitoriaResponse[]
 }
 
 @Service()
 
 export class IesService {
 
-    listaIes = signal<Ies[]>([
-        { id: 1, sigla: 'UCSAL', nome: 'Universidade Católica do Salvador', reitor: 'Dr. Silva', email: 'contato@ucsal.br', telefone: '71 9 xxxxxxxx',  status: 'Ativa', data: new Date(2012, 10, 4)},
-        { id: 2, sigla: 'UCB', nome: 'Universidade Católica de Brasília', reitor: 'Dra. Maria', email: 'contato@ucb.br', telefone: '71 9 xxxxxxxx',status: 'Ativa', data: new Date(2026, 5, 7) },
-        { id: 3, sigla: 'PUC-Rio', nome: 'Pontifícia Universidade Católica do Rio de Janeiro', reitor: 'Dr. João', email: 'contato@puc-rio.br', telefone: '71 9 xxxxxxxx', status: 'Inativa', data: new Date(2003, 9, 10)}
-    ])
+    private http = inject(HttpClient)
+    private apiUrl = 'http://localhost:8080/api/ies'
 
-    obterPorId(id: number): Ies | undefined {
-        return this.listaIes().find(ies => ies.id === id);
+
+    listaIes = signal<Ies[]>([])
+
+    carregarTodas(): Observable<Ies[]> {
+        return this.http.get<Ies[]>(this.apiUrl).pipe(tap(dados => this.listaIes.set(dados)))
     }
 
-    salvar(iesAtualizada: Ies) {
-        this.listaIes.update(listaIes => this.listaIes().map(ies => ies.id === iesAtualizada.id ? iesAtualizada : ies))
+    obterPorId(id: number): Observable<Ies> {
+        return this.http.get<Ies>(`${this.apiUrl}/${id}`)
     }
 
-    adicionar(novaIes: Omit<Ies, 'id'>) {
-        const novoId = this.listaIes().length + 1;
-        this.listaIes.update(listaIes => [...listaIes, { ...novaIes, id: novoId }])
+    salvar(iesAtualizada: Ies): Observable<Ies> {
+        console.log(iesAtualizada)
+        return this.http.put<Ies>(`${this.apiUrl}/${iesAtualizada.id}`, iesAtualizada).pipe(tap(iesSalvo => {
+            this.listaIes.update(lista => lista.map(item => item.id === iesSalvo.id ? iesSalvo : item))
+        }))
     }
 
-    alterarStatus(id: number) {
-        this.listaIes.update(listaIes => listaIes.map(ies => ies.id === id ? { ...ies, status: ies.status === 'Ativa' ? 'Inativa' : 'Ativa' } : ies))
+    adicionar(novaIes: Ies): Observable<Ies> {
+        return this.http.post<Ies>(this.apiUrl, novaIes).pipe(
+            tap(caCriado => {
+                this.listaIes.update(lista => [...lista, caCriado]);
+            }))
     }
-    
+
+    alterarStatus(id: number): Observable<void> {
+        const iesAtual = this.listaIes().find(ies => ies.id === id);
+
+        const acao = iesAtual?.status === 'ATIVO' ? 'inativar' : 'reativar';
+
+        return this.http.patch<void>(`${this.apiUrl}/${id}/${acao}`, {}).pipe(
+            tap(() => this.carregarTodas().subscribe())
+        );
+    }
+
     filtrar(filtroTexto: string, filtroStatus: string): Ies[] {
         const texto = filtroTexto.toLowerCase();
         const status = filtroStatus;
 
         return this.listaIes().filter(ies => {
-            
+
             const atendeTexto = ies.sigla.toLowerCase().includes(texto) || ies.nome.toLowerCase().includes(texto);
 
             const atendeStatus = status === 'Todos' || ies.status == status;

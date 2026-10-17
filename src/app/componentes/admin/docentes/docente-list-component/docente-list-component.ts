@@ -1,7 +1,7 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Docente, DocenteService } from '../../../../services/admin/docentes/docente-service';
+import { DocenteService } from '../../../../services/admin/docentes/docente-service';
 
 @Component({
   imports: [RouterLink, FormsModule],
@@ -15,15 +15,34 @@ export class DocenteListComponent {
   docenteService = inject(DocenteService);
 
   filtroTexto = signal('');
-  filtroStatus = signal ('Todos');
+  filtroStatus = signal('Todos');
 
-
-  get docentesFiltrados() : Docente[] {
-    return this.docenteService.filtrar(this.filtroTexto(), this.filtroStatus());
+  
+  ngOnInit(): void {
+    this.docenteService.carregarTodos().subscribe()
   }
 
-  alternarStatus(id:number) {
-    this.docenteService.alterarStatus(id)
+
+  docentesFiltrados = computed(() => {
+    const texto = this.filtroTexto().toLowerCase().trim();
+    const status = this.filtroStatus();
+    const lista = this.docenteService.listaDocentes();
+
+    return lista.filter(docente => {
+      const atendeTexto =
+        docente.nomeCompleto.toLowerCase().includes(texto);
+
+      const atendeStatus = status === 'Todos' || docente.status === status;
+
+      return atendeTexto && atendeStatus;
+    });
+  });
+
+  alternarStatus(id?: number) {
+    if (!id) return
+    this.docenteService.alterarStatus(id).subscribe({
+      error: (err) => console.error('Erro ao alterar status do curso:', err)
+    })
   }
 
   novoDocente() {
