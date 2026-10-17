@@ -16,8 +16,8 @@
                 <label for="status">Status</label>
                 <select id="status" name="status" [(ngModel)]="filtroStatus">
                     <option value="Todos">Todos</option>
-                    <option value="Ativo">Ativo</option>
-                    <option value="Inativo">Inativo</option>
+                    <option value="ATIVO">Ativo</option>
+                    <option value="INATIVO">Inativo</option>
                 </select>
             </div>
 
@@ -34,13 +34,13 @@
                     <th>Ações</th>
                 </thead>
                 <tbody>
-                    @for (curso of cursosFiltradas; track curso.id) {
+                    @for (curso of cursosFiltrados(); track curso.id) {
                     <tr>
                         <td>{{curso.sigla}}</td>
-                        <td>{{curso.coordenador}}</td>
-                        <td>{{curso.caVinculada}}</td>
+                        <td>{{curso.nomeCoordenador}}</td>
+                        <td>{{curso.centroAcademicoNome}}</td>
                         <td>{{curso.descricao}}</td>
-                        @if (curso.status==="Ativo") {
+                        @if (curso.status==="ATIVO") {
                         <td class="status-ativa">Ativo</td>
                         } @else {
                         <td class="status-inativa">Inativo</td>
@@ -49,7 +49,7 @@
                             <div class="btn-group-acoes">
                                 <button class="btn-acao" [routerLink]="['/admin/curso/editar', curso.id]">Editar</button>
                                 <button class="btn-acao" (click)="alternarStatus(curso.id)">
-                                    {{ curso.status === 'Ativo' ? 'Inativar' : 'Reativar' }}
+                                    {{ curso.status === 'ATIVO' ? 'Inativar' : 'Reativar' }}
                                 </button>
                             </div>
                         </td>

@@ -1,8 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { Ca, CaService } from '../../../../services/admin/ca/ca-service';
+import { Component, computed, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
+import { AuditoriaService } from '../../../../services/admin/relatorio-auditoria/auditoria-service';
+import { DatePipe } from '@angular/common';
 
 export interface log {
   id: number;
@@ -14,20 +14,33 @@ export interface log {
 }
 
 @Component({
-  imports: [FormsModule],
+  imports: [FormsModule, DatePipe],
   selector: 'app-auditoria-component',
   styleUrl: './auditoria-component.css',
   templateUrl: './auditoria-component.html',
 })
 export class AuditoriaComponent {
   router = inject(Router);
-  caService = inject(CaService);
+  audService = inject(AuditoriaService);
 
-  filtroTexto = signal('');
-  filtroStatus = signal('Todos');
+  filtroTexto = signal<string>('');
 
-
-  get logs(): log[] {
-    return [];
+  ngOnInit(): void {
+    this.audService.carregarTodos().subscribe()
   }
+
+  logsFiltrados = computed(() => {
+    const textoUsuario = this.filtroTexto().toLowerCase().trim();
+
+    const lista = this.audService.listaLogs();
+
+    return lista.filter(log => {
+      const atendeUsuario =
+        log.usuarioNome.toLowerCase().includes(textoUsuario);
+
+
+      return atendeUsuario;
+    });
+  });
+
 }

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Curso, CursoService } from '../../../../services/admin/curso/curso-service';
 import { FormsModule } from '@angular/forms';
@@ -10,20 +10,38 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './curso-list-component.css',
   templateUrl: './curso-list-component.html',
 })
-export class CursoListComponent {
+export class CursoListComponent implements OnInit{
   router = inject(Router);
   cursoService = inject(CursoService);
 
   filtroTexto = signal('');
-  filtroStatus = signal ('Todos');
+  filtroStatus = signal('Todos');
 
-
-  get cursosFiltradas() : Curso[] {
-    return this.cursoService.filtrar(this.filtroTexto(), this.filtroStatus());
+  ngOnInit(): void {
+    this.cursoService.carregarTodos().subscribe()
   }
 
-  alternarStatus(id:number) {
-    this.cursoService.alterarStatus(id)
+
+  cursosFiltrados = computed(() => {
+    const texto = this.filtroTexto().toLowerCase().trim();
+    const status = this.filtroStatus();
+    const lista = this.cursoService.listaCurso();
+
+    return lista.filter(curso => {
+      const atendeTexto =
+        curso.sigla.toLowerCase().includes(texto);
+
+      const atendeStatus = status === 'Todos' || curso.status === status;
+
+      return atendeTexto && atendeStatus;
+    });
+  });
+
+  alternarStatus(id?: number) {
+    if (!id) return
+    this.cursoService.alterarStatus(id).subscribe({
+      error: (err) => console.error('Erro ao alterar status do curso:', err)
+    })
   }
 
   novoCurso() {

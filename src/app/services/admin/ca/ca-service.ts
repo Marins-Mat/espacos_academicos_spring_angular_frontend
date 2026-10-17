@@ -1,82 +1,66 @@
-import { Service, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Service, signal } from '@angular/core';
+import { Observable, tap } from 'rxjs';
+import { StatusCadastro } from '../../usuario-service';
+import { Router } from '@angular/router';
 
 export interface Ca {
-    id: number;
+    id?: number;
     nome: string;
-    telefone: string;
-    email: string;
-    coordenador: string;
-    IesVinculada: string;
-    status: 'Ativo' | 'Inativo';
-    dataDeCadastramento: Date;
+    telefoneCentral: string;
+    emailCentral: string;
+    nomeCoordenador: string;
+    iesId: number;
+    iesSigla?: string;
+    status?: StatusCadastro;
+    dataCadastramento?: Date;
 }
 
 @Service()
 
 
 export class CaService {
+    private http = inject(HttpClient)
+    private apiUrl = 'http://localhost:8080/api/centros-academicos'
+    private router = inject(Router)
 
-    listaCas = signal<Ca[]>([
-        {
-            id: 1,
-            nome: "Escola de Educação (CEDU)",
-            telefone: "(71) 3203-0001",
-            email: "cedu@exemplo.ucsal.br",
-            coordenador: "Ana Beatriz Souza",
-            IesVinculada: "UCSAL",
-            status: "Ativo",
-            dataDeCadastramento: new Date(2026, 5, 6)
-        },
-        {
-            id: 2,
-            nome: "Cultura e Humanidades (CHUM)",
-            telefone: "(71) 3203-0002",
-            email: "chum@exemplo.ucsal.br",
-            coordenador: "Carlos Eduardo Lima",
-            IesVinculada: "UCSAL",
-            status: "Ativo",
-            dataDeCadastramento: new Date(2025, 3, 2)
-        },
-        {
-            id: 3,
-            nome: "Escola de Ciências Sociais e Aplicadas (CCSA)",
-            telefone: "(71) 3203-0003",
-            email: "ccsa@exemplo.ucsal.br",
-            coordenador: "Mariana Costa Ribeiro",
-            IesVinculada: "UCSAL",
-            status: "Inativo",
-            dataDeCadastramento: new Date(2026, 5, 4)
-        },
-        {
-            id: 4,
-            nome: "Escola de Engenharias e Ciências Tecnológicas (CCET)",
-            telefone: "(71) 3203-0004",
-            email: "ccet@exemplo.ucsal.br",
-            coordenador: "Roberto Almeida Santos",
-            IesVinculada: "UCSAL",
-            status: "Ativo",
-            dataDeCadastramento: new Date(2023, 5, 6)
-        }
-    ])
+    listaCas = signal<Ca[]>([])
 
-    obterPorId(id: Number): Ca | undefined {
-        return this.listaCas().find(ca => ca.id===id);
+
+    carregarTodas(): Observable<Ca[]> {
+        return this.http.get<Ca[]>(this.apiUrl).pipe(tap(dados => this.listaCas.set(dados)))
     }
 
-    salvar(caAtualizada: Ca) {
-            this.listaCas.update(listaCas => this.listaCas().map(ca => ca.id === caAtualizada.id ? caAtualizada : ca))
-        }
-    
-        adicionar(novoCa: Omit<Ca, 'id'>) {
-            const novoId = this.listaCas().length + 1;
-            this.listaCas.update(listaCas => [...listaCas, { ...novoCa, id: novoId }])
-        }
-    
-        alterarStatus(id: number) {
-            this.listaCas.update(listaCas => listaCas.map(ca => ca.id === id ? { ...ca, status: ca.status === 'Ativo' ? 'Inativo' : 'Ativo' } : ca))
-        }
+    obterPorId(id: Number): Observable<Ca> {
+        return this.http.get<Ca>(`${this.apiUrl}/${id}`)
+    }
 
-    filtrar(filtroTexto: string, filtroStatus: string) : Ca[] {
+    
+    salvar(caAtualizada: Ca): Observable<Ca> {
+        return this.http.put<Ca>(`${this.apiUrl}/${caAtualizada.id}`, caAtualizada).pipe(tap(caSalvo => {
+            this.listaCas.update(lista => lista.map(item => item.id === caSalvo.id ? caSalvo : item))
+        }))
+    }
+
+    adicionar(novoCa: Omit<Ca, 'id'>): Observable<Ca> {
+        return this.http.post<Ca>(this.apiUrl, novoCa).pipe(
+            tap(caCriado => {
+                this.listaCas.update(lista => [...lista, caCriado]);
+            }))
+    }
+
+    alterarStatus(id: number): Observable<void> {
+        const caAtual = this.listaCas().find(ca => ca.id === id);
+
+        const acao = caAtual?.status === 'ATIVO' ? 'inativar' : 'reativar';
+
+
+        return this.http.patch<void>(`${this.apiUrl}/${id}/${acao}`, {}).pipe(
+            tap(() => this.carregarTodas().subscribe())
+        )
+    }
+
+    filtrar(filtroTexto: string, filtroStatus: string): Ca[] {
         const texto = filtroTexto.toLowerCase();
         const status = filtroStatus;
 

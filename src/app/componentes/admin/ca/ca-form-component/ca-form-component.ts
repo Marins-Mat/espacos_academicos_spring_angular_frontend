@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Ca, CaService } from '../../../../services/admin/ca/ca-service';
 import { FormsModule } from '@angular/forms';
+import { Ies, IesService } from '../../../../services/admin/ies/ies-service';
 
 @Component({
   imports: [RouterLink, FormsModule],
@@ -13,42 +14,59 @@ export class CaFormComponent implements OnInit {
   route = inject(ActivatedRoute);
   router = inject(Router);
   caService = inject(CaService);
+  iesService = inject(IesService)
 
   isModoEditor = false;
 
   caForm = signal<Ca>({
-    id: 0,
     nome: '',
-    coordenador: '',
-    IesVinculada: '',
-    email: '',
-    telefone: '',
-    status: 'Ativo',
-    dataDeCadastramento: new Date()
+    nomeCoordenador: '',
+    iesId: 1,
+    emailCentral: '',
+    telefoneCentral: ''
   })
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
+
     if (idParam) {
       const id = Number(idParam);
-      const caEncontrada = this.caService.obterPorId(id);
+      this.isModoEditor = true;
 
-      if (caEncontrada) {
+      this.caService.obterPorId(id).subscribe({
+        next: (caEncontrada: Ca) => {
 
-        this.isModoEditor = true;
-        this.caForm.set({ ...caEncontrada });
+          let dataFormatada: any = caEncontrada.dataCadastramento;
+          if (dataFormatada) {
+            dataFormatada = new Date(dataFormatada).toISOString().split('T')[0];
+          }
 
-      } else {
-        this.router.navigate(['admin/ca'])
-      }
+          this.caForm.set({
+            id: caEncontrada.id,
+            nome: caEncontrada.nome,
+            nomeCoordenador: caEncontrada.nomeCoordenador,
+            iesId: caEncontrada.iesId,
+            iesSigla: caEncontrada.iesSigla,
+            emailCentral: caEncontrada.emailCentral,
+            telefoneCentral: caEncontrada.telefoneCentral,
+            dataCadastramento: dataFormatada,
+            status: caEncontrada.status
+          })
+        }
+      })
     }
   }
 
+  instituicoes(): Ies[] {
+    this.iesService.carregarTodas().subscribe();
+    return this.iesService.listaIes();
+  }
+
   salvar() {
-    if(this.isModoEditor) {
-      this.caService.salvar(this.caForm());
+    if (this.isModoEditor) {
+      this.caService.salvar(this.caForm()).subscribe();
     } else {
-      this.caService.adicionar(this.caForm());
+      this.caService.adicionar(this.caForm()).subscribe();
     }
 
     this.router.navigate(['admin/ca']);

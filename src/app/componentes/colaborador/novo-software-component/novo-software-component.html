@@ -1,6 +1,10 @@
 <div class="container">
     <header class="cabecalho">
+        @if(isModoEditor) {
+        <h1>Editar Software</h1>
+        }@else {
         <h1>Novo Software</h1>
+        }
     </header>
 
     <section class="software-container">

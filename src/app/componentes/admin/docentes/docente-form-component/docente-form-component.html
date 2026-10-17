@@ -1,6 +1,10 @@
 <div class="container">
     <header class="cabecalho">
+        @if(isModoEditor) {
+        <h1>Editar Docente</h1>
+        }@else {
         <h1>Novo Docente</h1>
+        }
     </header>
 
     <section class="docente-container">
@@ -8,17 +12,21 @@
 
             <div class="itemForm campo-grande">
                 <label for="nome">Nome do Docente</label>
-                <input type="text" name="nome" id="nome" [(ngModel)]="docenteForm().nome">
+                <input type="text" name="nome" id="nome" [(ngModel)]="docenteForm().nomeCompleto">
             </div>
 
             <div class="itemForm">
-                <label for="caVinculada">CA Vinculada</label>
-                <input type="text" name="caVinculada" id="caVinculada" [(ngModel)]="docenteForm().caVinculada">
+                <label for="matricula">Matricula</label>
+                <input type="text" name="matricula" id="matricula" [(ngModel)]="docenteForm().matricula">
             </div>
 
             <div class="itemForm">
-                <label for="iesVinc">Telefone</label>
-                <input type="text" name="telefone" id="telefone" [(ngModel)]="docenteForm().telefone">
+                <label for="caVinc">CA Vinculada</label>
+                <select name="caVinc" id="caVinc" [(ngModel)]="docenteForm().centroAcademicoId">
+                    @for (ca of centros(); track ca.id) {
+                    <option value="{{ca.id}}">{{ca.nome}}</option>
+                    }
+                </select>
             </div>
 
             <div class="itemForm campo-grande">
@@ -26,18 +34,33 @@
                 <input type="email" name="email" id="email" [(ngModel)]="docenteForm().email">
             </div>
 
+            
+            <div class="itemForm">
+                <label for="senha">Senha</label>
+                <input type="email" name="senha" id="senha" [(ngModel)]="docenteForm().senha">
+            </div>
+            
+
+
+            <div class="itemForm">
+                <label for="iesVinc">Telefone</label>
+                <input type="text" name="telefone" id="telefone" [(ngModel)]="docenteForm().telefone">
+            </div>
+
+
+            @if(isModoEditor) {
             <div class="itemForm">
                 <label for="status">Status</label>
-                <select name="status" id="status" [(ngModel)]="docenteForm().status">
-                    <option value="Ativo">Ativo</option>
-                    <option value="Inativo">Inativo</option>
-                </select>
+                <input name="status" id="status" type="text" [(ngModel)]="docenteForm().status" readonly>
             </div>
 
             <div class="itemForm">
-                <label>Data de cadastramento: </label>
-                <time datetime="">{{docenteForm().dataCadastro.toLocaleDateString('pt-BR')}}</time>
+                <label for="data">Data de cadastramento: </label>
+                <input type="date" id="data" name="dataCadastramento" [ngModel]="docenteForm().dataCadastramento"
+                    (ngModelChange)="docenteForm.set({ ...docenteForm(), dataCadastramento: $event })" readonly>
             </div>
+            }
+
 
             <div class="btn-group">
                 <button type="button" class="btn-cancelar" routerLink="/admin/docentes">Cancelar</button>

@@ -1,89 +1,55 @@
-import { Service, signal } from '@angular/core';
-
-export interface Docente {
-    matricula: number;
-    nome: string;
-    email: string;
-    telefone: string;
-    caVinculada: string;
-    status: 'Ativo' | 'Inativo';
-    dataCadastro: Date;
-}
+import { inject, Service, signal } from '@angular/core';
+import { StatusCadastro, Usuario } from '../../usuario-service';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
 
 
 @Service()
 export class DocenteService {
-    listaDocentes = signal<Docente[]>([
-        {
-            matricula: 20260001,
-            nome: "Roberto Almeida Santos",
-            email: "roberto.santos@exemplo.ucsal.br",
-            telefone: "(71) 99100-0001",
-            caVinculada: "CCET",
-            status: "Ativo",
-            dataCadastro: new Date(2026, 2, 10)
-        },
-        {
-            matricula: 20260002,
-            nome: "Lucas Gabriel Nogueira",
-            email: "lucas.nogueira@exemplo.ucsal.br",
-            telefone: "(71) 99100-0002",
-            caVinculada: "CCET",
-            status: "Ativo",
-            dataCadastro: new Date(2026, 2, 10)
-        },
-        {
-            matricula: 20260003,
-            nome: "Helena Martins Barreto",
-            email: "helena.barreto@exemplo.ucsal.br",
-            telefone: "(71) 99100-0003",
-            caVinculada: "CCET",
-            status: "Ativo",
-            dataCadastro: new Date(2026, 2, 12)
-        },
-        {
-            matricula: 20260004,
-            nome: "Ana Beatriz Souza",
-            email: "ana.souza@exemplo.ucsal.br",
-            telefone: "(71) 99100-0004",
-            caVinculada: "CEDU",
-            status: "Ativo",
-            dataCadastro: new Date(2026, 2, 12)
-        },
-        {
-            matricula: 20260005,
-            nome: "Mariana Costa Ribeiro",
-            email: "mariana.ribeiro@exemplo.ucsal.br",
-            telefone: "(71) 99100-0005",
-            caVinculada: "CCSA",
-            status: "Ativo",
-            dataCadastro: new Date(2026, 2, 14)
-        }
-    ])
+    private http = inject(HttpClient)
+    private apiUrl = 'http://localhost:8080/api/usuarios'
 
-    obterPorId(matricula: Number): Docente | undefined {
-        return this.listaDocentes().find(docente => docente.matricula === matricula);
+    listaDocentes = signal<Usuario[]>([])
+
+    carregarTodos(): Observable<Usuario[]> {
+        return this.http.get<Usuario[]>(this.apiUrl).pipe(tap(dados => this.listaDocentes.set(dados)))
     }
 
-    salvar(docenteAtualizado: Docente) {
-        this.listaDocentes.update(listaDocentes => this.listaDocentes().map(docente => docente.matricula === docenteAtualizado.matricula ? docenteAtualizado : docente))
+    obterPorId(id: Number): Observable<Usuario> {
+        return this.http.get<Usuario>(`${this.apiUrl}/${id}`)
     }
 
-    adicionar(novoDocente: Omit<Docente, 'matricula'>) {
-        const novaMatricula = this.listaDocentes().length + 1;
-        this.listaDocentes.update(listaDocentes => [...listaDocentes, { ...novoDocente, matricula: novaMatricula }])
+    salvar(docenteAtualizado: Usuario) : Observable<Usuario> {
+        return this.http.put<Usuario>(`${this.apiUrl}/${docenteAtualizado.id}`, docenteAtualizado).pipe(tap(docenteSalvo => {
+                    this.listaDocentes.update(lista => lista.map(item => item.id === docenteSalvo.id ? docenteSalvo : item))
+                }))
     }
 
-    alterarStatus(matricula: number) {
-        this.listaDocentes.update(listaDocentes => listaDocentes.map(docente => docente.matricula === matricula ? { ...docente, status: docente.status === 'Ativo' ? 'Inativo' : 'Ativo' } : docente))
+    adicionar(novoDocente: Omit<Usuario, 'matricula'>): Observable<Usuario>   {
+        return this.http.post<Usuario>(this.apiUrl, novoDocente).pipe(
+                    tap(docenteCriado => {
+                        this.listaDocentes.update(lista => [...lista, docenteCriado]);
+                    }))
     }
 
-    filtrar(filtroTexto: string, filtroStatus: string): Docente[] {
+    alterarStatus(id: number): Observable<void> {
+
+        const cursoAtual = this.listaDocentes().find(docente => docente.id === id);
+
+        const acao = cursoAtual?.status === 'ATIVO' ? 'inativar' : 'reativar';
+
+
+        return this.http.patch<void>(`${this.apiUrl}/${id}/${acao}`, {}).pipe(
+            tap(() => this.carregarTodos().subscribe())
+        )
+    }
+
+    filtrar(filtroTexto: string, filtroStatus: string): Usuario[] {
         const texto = filtroTexto.toLowerCase();
         const status = filtroStatus;
 
         return this.listaDocentes().filter(docente => {
-            const atendeTexto = docente.nome.toLowerCase().includes(texto);
+            const atendeTexto = docente.nomeCompleto.toLowerCase().includes(texto);
 
             const atendeStatus = status === 'Todos' || docente.status == status;
 
