@@ -1,96 +1,99 @@
-import { Service, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Service, signal } from '@angular/core';
+import { Observable, tap } from 'rxjs';
 
-export const status_solicitacao_espaco = {
+export const StatusSolicitacao = {
   PENDENTE: 'PENDENTE',
   APROVADA: 'APROVADA',
   REPROVADA: 'REPROVADA',
   FINALIZADA: 'FINALIZADA'
-} as const
+} as const;
 
-export type status_solicitacao_espaco = typeof status_solicitacao_espaco[keyof typeof status_solicitacao_espaco]
+export type StatusSolicitacao = typeof StatusSolicitacao[keyof typeof StatusSolicitacao];
 
+export interface SolicitacaoReservaRequestDto {
+  dataUtilizacao: string; // Formato "YYYY-MM-DD"
+  horaInicio: string;     // Formato "HH:mm"
+  horaFim: string;        // Formato "HH:mm"
+  espacoId: number;
+  solicitanteId: number;
+}
 
-export interface solicitacao_espaco {
+export interface SolicitacaoReservaResponseDto {
   id: number;
-  id_espaco: number;
-  id_solicitante: number;
-  inicio: Date;
-  fim: Date;
-  data_solicitacao: Date;
-  status: status_solicitacao_espaco;
-  justificativa?: string;
-  id_avaliador?: number;
+  dataUtilizacao: string;
+  horaInicio: string;
+  horaFim: string;
+  dataSolicitacao: string;
+  status: StatusSolicitacao;
+  justificativaReprovacao?: string;
+  espacoId?: number;
+  espacoNome?: string;
+  espacoSigla?: string;
+  solicitanteId?: number;
+  solicitanteNome?: string;
+  avaliadorId?: number;
+  avaliadorNome?: string;
+}
+
+export interface reprovarSolicitacaoReservaDto {
+  avaliadorId: number,
+  motivo: string
 }
 
 
 @Service()
 export class SolicitacaoEspacoService {
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:8080/api/solicitacoes-reservas';
 
-  solicitacoes_espaco = signal<solicitacao_espaco[]>([
-    {
-      id: 1,
-      id_espaco: 1,
-      id_solicitante: 20260001,
-      inicio: new Date(2026, 2, 13, 7, 0),
-      fim: new Date(2026, 2, 13, 9, 30),
-      data_solicitacao: new Date(2026, 2, 5),
-      status: "APROVADA",
-      id_avaliador: 2
-    },
-    {
-      id: 2,
-      id_espaco: 1,
-      id_solicitante: 20260002,
-      inicio: new Date(2026, 2, 13, 8, 0),
-      fim: new Date(2026, 2, 13, 10, 0),
-      data_solicitacao: new Date(2026, 2, 6),
-      status: "REPROVADA",
-      justificativa: "Horário em conflito com outra reserva já aprovada para este espaço",
-      id_avaliador: 1
-    },
-    {
-      id: 3,
-      id_espaco: 3,
-      id_solicitante: 20260003,
-      inicio: new Date(2026, 2, 14, 10, 0),
-      fim: new Date(2026, 2, 14, 12, 0),
-      data_solicitacao: new Date(2026, 2, 8),
-      status: "PENDENTE"
-    },
-    {
-      id: 4,
-      id_espaco: 5,
-      id_solicitante: 20260004,
-      inicio: new Date(2026, 2, 15, 19, 0),
-      fim: new Date(2026, 2, 15, 21, 0),
-      data_solicitacao: new Date(2026, 2, 9),
-      status: "APROVADA",
-      id_avaliador: 2
-    },
-    {
-      id: 5,
-      id_espaco: 2,
-      id_solicitante: 20260006,
-      inicio: new Date(2026, 2, 16, 14, 0),
-      fim: new Date(2026, 2, 16, 16, 0),
-      data_solicitacao: new Date(2026, 2, 10),
-      status: "REPROVADA",
-      justificativa: "Espaço indisponível para uso por motivo de manutenção",
-      id_avaliador: 1
-    },
-    {
-      id: 6,
-      id_espaco: 4,
-      id_solicitante: 20260005,
-      inicio: new Date(2026, 2, 17, 8, 0),
-      fim: new Date(2026, 2, 17, 10, 0),
-      data_solicitacao: new Date(2026, 2, 11),
-      status: "PENDENTE"
-    }
-  ])
+  solicitacoes_espaco = signal<SolicitacaoReservaResponseDto[]>([]);
 
-  obterPorId(id: number) : solicitacao_espaco | undefined {
-    return this.solicitacoes_espaco().find(sol => sol.id === id);
+  carregarTodos(): Observable<SolicitacaoReservaResponseDto[]> {
+    return this.http.get<SolicitacaoReservaResponseDto[]>(this.apiUrl).pipe(
+      tap(dados => this.solicitacoes_espaco.set(dados))
+    );
   }
 
+  obterPorId(id: number): Observable<SolicitacaoReservaResponseDto> {
+    return this.http.get<SolicitacaoReservaResponseDto>(`${this.apiUrl}/${id}`);
+  }
+
+  adicionar(dto: SolicitacaoReservaRequestDto): Observable<SolicitacaoReservaResponseDto> {
+    return this.http.post<SolicitacaoReservaResponseDto>(this.apiUrl, dto).pipe(
+      tap(nova => this.solicitacoes_espaco.update(lista => [...lista, nova]))
+    );
+  }
+
+  salvar(id: number, dto: SolicitacaoReservaRequestDto): Observable<SolicitacaoReservaResponseDto> {
+    return this.http.put<SolicitacaoReservaResponseDto>(`${this.apiUrl}/${id}`, dto).pipe(
+      tap(atualizada => {
+        this.solicitacoes_espaco.update(lista =>
+          lista.map(item => item.id === atualizada.id ? atualizada : item)
+        );
+      })
+    );
+  }
+
+  aprovarSolicitacao(id: number): Observable<SolicitacaoReservaResponseDto> {
+    return this.http.put<SolicitacaoReservaResponseDto>(`${this.apiUrl}/${id}/aprovar`, {})
+  }
+
+  reprovarSolicitacao(id: number, dto: reprovarSolicitacaoReservaDto): Observable<SolicitacaoReservaResponseDto> {
+    return this.http.put<SolicitacaoReservaResponseDto>(`${this.apiUrl}/${id}/reprovar`, dto)
+  }
+
+  inativar(id: number): Observable<SolicitacaoReservaResponseDto> {
+    return this.http.patch<SolicitacaoReservaResponseDto>(`${this.apiUrl}/${id}/inativar`, {}).pipe(
+      tap(solAtualizada => {
+        // Atualiza automaticamente o Signal para re-renderizar a tabela sem recarregar a página
+        this.solicitacoes_espaco.update(lista =>
+          lista.map(item => item.id === solAtualizada.id ? solAtualizada : item)
+        );
+      })
+    );
+  }
 }
+
+export type solicitacao_espaco = SolicitacaoReservaResponseDto;
+

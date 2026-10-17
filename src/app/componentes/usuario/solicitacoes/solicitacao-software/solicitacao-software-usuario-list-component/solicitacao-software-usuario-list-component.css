@@ -18,6 +18,21 @@
     font-weight: 600;
 }
 
+.cabecalho button {
+    background-color: #1F4E8C;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: 500;
+    width: 115px;
+    height: 45px;
+}
+
+.cabecalho button:hover {
+    cursor: pointer;
+} 
+
 .solicitacoes-container {
     background-color: #ffffff;
     padding: 25px;

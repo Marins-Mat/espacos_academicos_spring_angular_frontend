@@ -1,29 +1,33 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { solicitacao_software, SolicitacaoSoftwareService } from '../../../../../services/colaborador/solicitacoes/solicitacao-software-service';
-import { EaService } from '../../../../../services/colaborador/ea-service';
-import { SoftwareService } from '../../../../../services/colaborador/software-service';
-
+import { SolicitacaoSoftwareService } from '../../../../../services/colaborador/solicitacoes/solicitacao-software-service';
+import { AuthService } from '../../../../../core/auth/auth-service';
 
 @Component({
-  imports: [RouterLink],
   selector: 'app-solicitacao-software-list-component',
-  styleUrl: './solicitacao-software-list-component.css',
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterOutlet],
   templateUrl: './solicitacao-software-list-component.html',
+  styleUrl: './solicitacao-software-list-component.css',
 })
-export class SolicitacaoSoftwareListComponent {
-  solicitacaoService = inject(SolicitacaoSoftwareService)
-  softService = inject(SoftwareService)
-  eaService = inject(EaService)
+export class SolicitacaoSoftwareListComponent implements OnInit {
+  private solicitacaoService = inject(SolicitacaoSoftwareService);
+  authService = inject(AuthService)
+  readonly solicitacoes = this.solicitacaoService.solicitacoes_software;
 
-
-  get solicitacoes() : solicitacao_software[] {
-    return this.solicitacaoService.solicitacoes_software();
+  ngOnInit(): void {
+    this.solicitacaoService.carregarTodas().subscribe();
   }
 
+  aprovarSolicitacao(id: number): void {
+    const
+      avaliadorId = this.authService.obterUsuarioId() ?? 0
 
-
-  aprovarSolicitacao() {
-    console.log("Aprovada")
+    if (confirm('Tem certeza de que deseja aprovar esta solicitação?')) {
+      this.solicitacaoService.aprovar(id, avaliadorId).subscribe({
+        error: (err) => console.error('Erro ao aprovar solicitação:', err)
+      });
+    }
   }
 }

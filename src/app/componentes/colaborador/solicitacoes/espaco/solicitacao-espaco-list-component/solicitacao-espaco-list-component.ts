@@ -1,25 +1,26 @@
-import { Component, inject } from '@angular/core';
-import { solicitacao_espaco, SolicitacaoEspacoService } from '../../../../../services/colaborador/solicitacoes/solicitacao-espaco-service';
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { EaService } from '../../../../../services/colaborador/ea-service';
+import { SolicitacaoEspacoService, SolicitacaoReservaResponseDto } from '../../../../../services/colaborador/solicitacoes/solicitacao-espaco-service';
 
 @Component({
-  imports: [RouterLink, RouterOutlet],
   selector: 'app-solicitacao-espaco-list-component',
-  styleUrl: './solicitacao-espaco-list-component.css',
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterOutlet],
   templateUrl: './solicitacao-espaco-list-component.html',
+  styleUrl: './solicitacao-espaco-list-component.css',
 })
-export class SolicitacaoEspacoListComponent {
+export class SolicitacaoEspacoListComponent implements OnInit {
+  private solicitacaoService = inject(SolicitacaoEspacoService);
 
-  solicitacaoService = inject(SolicitacaoEspacoService)
-  eaService = inject(EaService)
+  // Expõe o Signal de solicitações diretamente para o template
+  readonly solicitacoes = this.solicitacaoService.solicitacoes_espaco;
 
-  get solicitacoes() : solicitacao_espaco[] {
-    return this.solicitacaoService.solicitacoes_espaco();
+  ngOnInit(): void {
+    this.solicitacaoService.carregarTodos().subscribe();
   }
 
-  aprovarSolicitacao() {
-    console.log("Aprovada")
+  aprovarSolicitacao(id: number): void {
+    
   }
-
 }

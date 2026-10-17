@@ -23,6 +23,23 @@ h2 {
     font-weight: 600;
 }
 
+.perfil-container {
+    margin-bottom: 1rem;
+    display: flex;
+    padding-left: 20px;
+}
+
+.select-perfil {
+    padding: 0.5rem;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #ffffff;
+    cursor: pointer;
+    outline: none;
+}
+
 nav{
     display: flex;
     flex-direction: column;
