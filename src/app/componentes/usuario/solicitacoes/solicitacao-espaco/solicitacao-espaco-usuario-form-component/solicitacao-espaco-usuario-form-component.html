@@ -1,50 +1,40 @@
 <div class="container">
-
-
     <section class="solicitacao-container">
-
         <header class="cabecalho">
-            @if(isModoEditor) {
-            <h1>Editar solicitacao</h1>
-            } @else {
-            <h1>Nova solicitação</h1>
-            }
+            <h1>{{ isModoEditor ? 'Editar solicitação' : 'Nova solicitação' }}</h1>
         </header>
 
-        <form ngSubmit="salvar()">
+        <form (ngSubmit)="salvar()">
             <div class="itens-group">
-
                 <div class="item-form">
-                    <label for="espacos">Espaço reservado: </label>
-                    <select name="espacos" id="espacos">
+                    <label for="espacos">Espaço reservado:</label>
+                    <select name="espacoId" id="espacos" [(ngModel)]="solForm.espacoId" required>
                         @for (espaco of espacos; track espaco.id) {
-                        <option value="{{espaco.id}}">{{espaco.nome}}</option>
+                            <option [value]="espaco.id">{{ espaco.nome }}</option>
                         }
                     </select>
                 </div>
 
                 <div class="item-form">
-                    <label for="data_utilizacao">Data de Utilização</label>
-                    <input type="date" name="data_utilizacao" id="data_utilizacao">
+                    <label for="dataUtilizacao">Data de Utilização</label>
+                    <input type="date" name="dataUtilizacao" id="dataUtilizacao" [(ngModel)]="solForm.dataUtilizacao" required>
                 </div>
 
                 <div class="item-form">
-                    <label for="horario_inicial">Horario inicial</label>
-                    <input type="time" name="horario_inicial" id="horario_inicial">
+                    <label for="horaInicio">Horário inicial</label>
+                    <input type="time" name="horaInicio" id="horaInicio" [(ngModel)]="solForm.horaInicio" required>
                 </div>
 
                 <div class="item-form">
-                    <label for="horario_encerramento">Horario de encerramento</label>
-                    <input type="time" name="horario_encerramento" id="horario_encerramento">
+                    <label for="horaFim">Horário de encerramento</label>
+                    <input type="time" name="horaFim" id="horaFim" [(ngModel)]="solForm.horaFim" required>
                 </div>
-                
+            </div>
+
+            <div class="btn-group">
+                <button type="submit">Salvar</button>
+                <button type="button" class="btn-cancelar" routerLink="/usuario/solicitacoes_espaco">Cancelar</button>
             </div>
         </form>
-
-        <div class="btn-group">
-            <button type="submit">Salvar</button>
-            <button type="button" class="btn-cancelar" routerLink="/usuario/solicitacoes_software">Cancelar</button>
-        </div>
-
     </section>
 </div>

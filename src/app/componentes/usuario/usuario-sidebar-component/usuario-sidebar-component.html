@@ -1,12 +1,19 @@
 <div class="container">
     <h1>Espaços Acadêmicos </h1>
-    <h2>Usuário</h2>
-
+    <div class="perfil-container">
+        <select [value]="perfilAtual()" (change)="trocarPerfil($event)" class="select-perfil">
+            @for (perfil of perfisDisponiveis(); track perfil.value) {
+            <option [value]="perfil.value" [selected]="perfil.value === perfilAtual()">
+                {{ perfil.label }}
+            </option>
+            }
+        </select>
+    </div>
     <nav>
         @for (item of menuItens; track item.label) {
-            <a [routerLink]="item.route" routerLinkActive="active" class="itemMenu">
-                {{item.label}}
-            </a>
+        <a [routerLink]="item.route" routerLinkActive="active" class="itemMenu">
+            {{item.label}}
+        </a>
         }
     </nav>
 </div>

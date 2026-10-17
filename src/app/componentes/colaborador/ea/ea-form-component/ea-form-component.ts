@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { Ea, EaService } from '../../../../services/colaborador/ea-service';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Ca, CaService } from '../../../../services/admin/ca/ca-service';
 
 @Component({
   imports: [FormsModule, RouterLink, RouterOutlet],
@@ -13,47 +14,66 @@ export class EaFormComponent {
   route = inject(ActivatedRoute);
   router = inject(Router);
   eaService = inject(EaService);
-
+  caService = inject(CaService)
   isModoEditor = false;
 
   eaForm = signal<Ea>({
-    id: 0,
     sigla: '',
     nome: '',
     tipo: 'SALA',
-    descricao: '',
-    capacidadeMax: 0,
+    descricaoComplementar: '',
+    capacidadeMaxima: 0,
     localizacao: '',
-    status: 'DISPONIVEL',
-    dataDeCadastramento: new Date()
+    centroAcademicoId: 1
   })
 
 
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
+
+
     if (idParam) {
       const id = Number(idParam);
-      const eaEncontrada = this.eaService.obterPorId(id);
+      this.isModoEditor = true;
 
-      if (eaEncontrada) {
+      this.eaService.obterPorId(id).subscribe({
+        next: (espacoEncontrado: Ea) => {
 
-        this.isModoEditor = true;
-        this.eaForm.set({ ...eaEncontrada });
+          let dataFormatada: any = espacoEncontrado.dataCadastro;
+          if (dataFormatada) {
+            dataFormatada = new Date(dataFormatada).toISOString().split('T')[0];
+          }
 
-      } else {
-        this.router.navigate(['colaborador/ea'])
-      }
+          this.eaForm.set({
+            id: espacoEncontrado.id,
+            sigla: espacoEncontrado.sigla,
+            nome: espacoEncontrado.nome,
+            capacidadeMaxima: espacoEncontrado.capacidadeMaxima,
+            tipo: espacoEncontrado.tipo,
+            descricaoComplementar: espacoEncontrado.descricaoComplementar,
+            localizacao: espacoEncontrado.localizacao,
+            centroAcademicoId: espacoEncontrado.centroAcademicoId,
+            centroAcademicoNome: espacoEncontrado.centroAcademicoNome,
+            status: espacoEncontrado.status,
+            dataCadastro: dataFormatada
+          })
+        }
+      })
     }
   }
 
+  centros(): Ca[] {
+      this.caService.carregarTodas().subscribe();
+      return this.caService.listaCas();
+    }
 
   salvar() {
 
     if (this.isModoEditor) {
-      this.eaService.salvar(this.eaForm());
+      this.eaService.salvar(this.eaForm()).subscribe()
     } else {
-      this.eaService.adicionar(this.eaForm());
+      this.eaService.adicionar(this.eaForm()).subscribe();
     }
 
     this.router.navigate(['colaborador/ea']);

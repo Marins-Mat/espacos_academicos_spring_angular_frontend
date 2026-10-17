@@ -1,47 +1,58 @@
 <div class="container">
     <header class="cabecalho">
         <h1>Solicitações de espaços acadêmicos</h1>
-        <button (click)="novaSolicitacao()">Nova Solicitação</button>
+        <button routerLink="/usuario/solicitacoes_espaco/nova">Nova Solicitação</button>
     </header>
+
     <div class="solicitacoes-container">
         <div class="tabela">
             <table class="tabela-solicitacoes">
-                <th>Espaço solicitado</th>
-                <th>Avaliador</th>
-                <th>Data do agendamento</th>
-                <th>Hora de inicio</th>
-                <th>Hora de termino</th>
-                <th>Data da solicitação</th>
-                <th>Status da solicitação</th>
-                <th>Ações</th>
-
-                @for (solicitacao of solicitacoes; track solicitacao.id) {
-                <tr>
-                    <td>{{eaService.obterPorId(solicitacao.id_espaco)?.nome}}</td>
-                    <td>{{solicitacao.id_avaliador}}</td>
-                    <td>{{solicitacao.inicio.toLocaleDateString('pt-BR')}}</td>
-                    <td>{{solicitacao.inicio.toLocaleTimeString('pt-BR')}}</td>
-                    <td>{{solicitacao.fim.toLocaleTimeString('pt-BR')}}</td>
-                    <td>{{solicitacao.data_solicitacao.toLocaleDateString('pt-BR')}}</td>
-                    <td>{{solicitacao.status}}</td>
-                    <td>
-                        <div class="btn-group">
-                            @if (solicitacao.status==='APROVADA') {
-                            --
-                            } @else if (solicitacao.status==='REPROVADA') {
-                            <button [routerLink]="['/usuario', 'solicitacoes_espaco', 'justificativa', solicitacao.id]"
-                                class="btn-acao" class="btn-acao">Justificativa</button>
-                            } @else if(solicitacao.status==='PENDENTE'){
-                            <button (click)="inativar()" class="btn-acao">Inativar</button>
-                            <button [routerLink]="['/usuario', 'solicitacoes_espaco', 'editar', solicitacao.id]"
-                                class="btn-acao btn-reprovar">Editar</button>
-
-                            }
-
-                        </div>
-                    </td>
-                </tr>
-                }
+                <thead>
+                    <tr>
+                        <th>Espaço solicitado</th>
+                        <th>Avaliador</th>
+                        <th>Data do agendamento</th>
+                        <th>Hora de início</th>
+                        <th>Hora de término</th>
+                        <th>Data da solicitação</th>
+                        <th>Status da solicitação</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (solicitacao of solicitacoes(); track solicitacao.id) {
+                    <tr>
+                        <td>{{ solicitacao.espacoNome || solicitacao.espacoSigla || 'N/A' }}</td>
+                        <td>{{ solicitacao.avaliadorNome || 'Pendente' }}</td>
+                        <!-- Corrigido: usa dataUtilizacao com fuso UTC para não subtrair 1 dia -->
+                        <td>{{ solicitacao.dataUtilizacao | date: 'dd/MM/yyyy' : 'UTC' }}</td>
+                        <!-- Corrigido: exibe diretamente a string LocalTime vinda do backend -->
+                        <td>{{ solicitacao.horaInicio ? solicitacao.horaInicio.substring(0, 5) : '--:--' }}</td>
+                        <td>{{ solicitacao.horaFim ? solicitacao.horaFim.substring(0, 5) : '--:--' }}</td>
+                        <!-- dataSolicitacao é LocalDateTime completo (ISO) -->
+                        <td>{{ solicitacao.dataSolicitacao | date: 'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ solicitacao.status }}</td>
+                        <td>
+                            <div class="btn-group">
+                                @if (solicitacao.status === 'APROVADA') {
+                                    <span>--</span>
+                                } @else if (solicitacao.status === 'REPROVADA') {
+                                    <button [routerLink]="['/usuario', 'solicitacoes_espaco', 'justificativa', solicitacao.id]"
+                                            class="btn-acao">
+                                        Justificativa
+                                    </button>
+                                } @else if (solicitacao.status === 'PENDENTE') {
+                                    <button (click)="inativar(solicitacao.id)" class="btn-acao">Inativar</button>
+                                    <button [routerLink]="['/usuario', 'solicitacoes_espaco', 'editar', solicitacao.id]"
+                                            class="btn-acao btn-reprovar">
+                                        Editar
+                                    </button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
             </table>
         </div>
     </div>

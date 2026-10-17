@@ -1,46 +1,39 @@
 <div class="container">
-
-
     <section class="solicitacao-container">
-
         <header class="cabecalho">
-            @if(isModoEditor) {
-            <h1>Editar solicitacao</h1>
-            } @else {
-            <h1>Nova solicitação</h1>
-            }
+            <h1>{{ isModoEditor ? 'Editar solicitação' : 'Nova solicitação' }}</h1>
         </header>
 
-        <form ngSubmit="salvar()">
+        <!-- Corrigido para (ngSubmit) com parênteses -->
+        <form (ngSubmit)="salvar()">
             <div class="itens-group">
 
                 <div class="item-form">
-                    <label for="software">Software: </label>
-                    <input type="text" name="software" id="software">
-                </div>
-
-                <div class="item-form">
-                    <label for="url">URL: </label>
-                    <input type="text" name="url" id="url">
-                </div>
-
-                <div class="item-form">
-                    <label for="lab">Laboratorio: </label>
-                    <select name="lab" id="lab">
-                        @for (espaco of espacos; track espaco.id) {
-                        <option value="{{espaco.id}}">{{espaco.nome}}</option>
+                    <label for="softwareId">Software: </label>
+                    <select name="softwareId" id="softwareId" [(ngModel)]="solForm.softwareId" required>
+                        @for (soft of softwares; track soft.id) {
+                            <option [value]="soft.id">{{ soft.nome }}</option>
                         }
                     </select>
                 </div>
 
                 <div class="item-form">
-                    <label for="obj">Objetivo: </label>
-                    <input type="text" name="obj" id="obj">
+                    <label for="lab">Laboratório: </label>
+                    <select name="laboratorioId" id="lab" [(ngModel)]="solForm.laboratorioId" required>
+                        @for (lab of laboratorios; track lab.id) {
+                            <option [value]="lab.id">{{ lab.nome }}</option>
+                        }
+                    </select>
                 </div>
 
                 <div class="item-form">
-                    <label for="disc">Disciplinas: </label>
-                    <input type="text" name="disc" id="disc">
+                    <label for="justificativaUso">Objetivo / Justificativa: </label>
+                    <input type="text" name="justificativaUso" id="justificativaUso" [(ngModel)]="solForm.justificativaUso" required>
+                </div>
+
+                <div class="item-form">
+                    <label for="disciplina">Disciplina: </label>
+                    <input type="text" name="disciplina" id="disciplina" [(ngModel)]="solForm.disciplina">
                 </div>
 
                 <div class="btn-group">
@@ -50,8 +43,5 @@
 
             </div>
         </form>
-
-
-
     </section>
 </div>

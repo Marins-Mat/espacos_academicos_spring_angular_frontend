@@ -34,7 +34,7 @@
                     <div class="itemForm">
                         <label for="capacidadeMax">Capacidade Máxima</label>
                         <input type="number" name="capacidadeMax" id="capacidadeMax"
-                            [(ngModel)]="eaForm().capacidadeMax">
+                            [(ngModel)]="eaForm().capacidadeMaxima">
                     </div>
 
                     <div class="itemForm campo-grande">
@@ -43,28 +43,48 @@
                     </div>
 
                     <div class="itemForm">
-                        <label for="status">Status</label>
-                        <select name="status" id="status" [(ngModel)]="eaForm().status">
-                            <option value="DISPONIVEL">Disponível</option>
-                            <option value="INDISPONIVEL">Indisponível</option>
+                        <label for="caVinc">CA Vinculada</label>
+                        <select name="caVinc" id="caVinc" [(ngModel)]="eaForm().centroAcademicoId">
+                            @for (ca of centros(); track ca.id) {
+                            <option value="{{ca.id}}">{{ca.nome}}</option>
+                            }
                         </select>
+                    </div>
+
+                    @if(isModoEditor) {
+                    <div class="itemForm">
+                        <label for="status">Status</label>
+                        <input name="status" id="status" type="text" [(ngModel)]="eaForm().status" readonly>
+                    </div>
+
+                    <div class="itemForm">
+                        <label for="data">Data de cadastramento: </label>
+                        <input type="date" id="data" name="dataCadastramento" [ngModel]="eaForm().dataCadastro"
+                            (ngModelChange)="eaForm.set({ ...eaForm(), dataCadastro: $event })" readonly>
+                    </div>
+                    }
+                </div>
+                <div class="desc">
+                    <div class="itemForm descricao">
+                        <label for="descricao">Descricao Complementar</label>
+                        <input type="text" name="descricao" id="descricao" [(ngModel)]="eaForm().descricaoComplementar">
+                    </div>
+
+                    <div class="itemForm descricao">
+                        <label for="esp">Especificação dos computadores</label>
+                        <input type="text" name="esp" id="esp" [(ngModel)]="eaForm().tipoComputadores">
                     </div>
                 </div>
 
-                <div class="itemForm descricao">
-                    <label for="descricao">Descricao Complementar</label>
-                    <input type="text" name="descricao" id="descricao" [(ngModel)]="eaForm().descricao">
-                </div>
             </div>
 
-            @if (eaForm().tipo.includes('LABORATORIO') ) {
+            @if (eaForm().tipo.includes('LABORATORIO') && isModoEditor) {
             <router-outlet></router-outlet>
-
             } @else {
-                <div class="btn-group">
-                    <button type="submit">Salvar</button>
-                    <button type="button" class="btn-cancelar" routerLink="/colaborador/ea">Cancelar</button>
-                </div>
+            <div class="btn-group">
+                <button type="submit">Salvar</button>
+                <button type="button" class="btn-cancelar" routerLink="/colaborador/ea">Cancelar</button>
+            </div>
             }
         </form>
     </section>

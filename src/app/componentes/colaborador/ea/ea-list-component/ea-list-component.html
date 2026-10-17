@@ -35,12 +35,12 @@
                     <th>Ações</th>
                 </thead>
                 <tbody>
-                    @for (ea of easFiltradas; track ea.id) {
+                    @for (ea of easFiltrados(); track ea.id) {
                     <tr>
                         <td>{{ea.sigla}}</td>
                         <td>{{ea.nome}}</td>
                         <td>{{ea.tipo}}</td>
-                        <td>{{ea.capacidadeMax}}</td>
+                        <td>{{ea.capacidadeMaxima}}</td>
                         <td>{{ea.localizacao}}</td>
                         @if (ea.status==='DISPONIVEL') {
                         <td class="status-disponivel">Disponível</td>

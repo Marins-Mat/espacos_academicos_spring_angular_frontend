@@ -3,23 +3,24 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from './auth-service';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  const router = inject(Router)
-  const authService = inject(AuthService)
+  const router = inject(Router);
+  const authService = inject(AuthService);
 
   if (!authService.isLoggedIn()) {
-    router.navigate(['/login'])
-    return false
+    router.navigate(['/login']);
+    return false;
   }
 
-  const expectedRoles = route.data['roles'] as string[]
+  const expectedRoles = route.data['roles'] as string[];
 
   if (!expectedRoles || expectedRoles.length === 0) {
     return true;
   }
 
-  const userPerfis = authService.getPerfis();
+  // Acessa as roles do usuário autenticado no Signal do AuthService
+  const userPerfis = authService.usuarioAtual()?.roles ?? [];
 
-  const hasPermission = expectedRoles.some(role => userPerfis.includes(role))
+  const hasPermission = expectedRoles.some(role => userPerfis.includes(role));
 
   if (hasPermission) {
     return true;

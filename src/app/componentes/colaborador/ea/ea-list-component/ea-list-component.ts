@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Ea, EaService } from '../../../../services/colaborador/ea-service';
@@ -16,13 +16,30 @@ export class EaListComponent {
   filtroTexto = signal('');
   filtroStatus = signal ('Todos');
 
-
-  get easFiltradas() : Ea[] {
-    return this.eaService.filtrar(this.filtroTexto(), this.filtroStatus());
+  ngOnInit(): void {
+    this.eaService.carregarTodos().subscribe()
   }
 
-  alternarStatus(id:number) {
-    this.eaService.alterarStatus(id)
+   easFiltrados = computed(() => {
+    const texto = this.filtroTexto().toLowerCase().trim();
+    const status = this.filtroStatus();
+    const lista = this.eaService.listaEas();
+
+    return lista.filter(ea => {
+      const atendeTexto =
+        ea.nome.toLowerCase().includes(texto);
+
+      const atendeStatus = status === 'Todos' || ea.status === status;
+
+      return atendeTexto && atendeStatus;
+    });
+  });
+
+  alternarStatus(id?: number) {
+    if (!id) return
+    this.eaService.alterarStatus(id).subscribe({
+      error: (err) => console.error('Erro ao alterar status do espaço acadêmico:', err)
+    })
   }
 
   novoEa() {

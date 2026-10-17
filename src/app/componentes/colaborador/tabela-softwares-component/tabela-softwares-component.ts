@@ -1,61 +1,84 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Ea, EaService } from '../../../services/colaborador/ea-service';
-import { Software } from '../../../services/colaborador/software-service';
+import { Software, SoftwareService } from '../../../services/colaborador/software-service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { ControlContainer, FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   imports: [FormsModule, RouterLink],
   selector: 'app-tabela-softwares-component',
   styleUrl: './tabela-softwares-component.css',
   templateUrl: './tabela-softwares-component.html',
+  viewProviders: [
+    { provide: ControlContainer, useExisting: NgForm }
+  ]
 })
 export class TabelaSoftwaresComponent {
   route = inject(ActivatedRoute);
   router = inject(Router);
   eaService = inject(EaService);
-
+  softService = inject(SoftwareService)
   isModoEditor = false;
 
   eaForm = signal<Ea>({
-    id: 0,
+    id: 1,
     sigla: '',
     nome: '',
     tipo: 'SALA',
-    descricao: '',
-    capacidadeMax: 0,
+    descricaoComplementar: '',
+    capacidadeMaxima: 0,
     localizacao: '',
-    status: 'DISPONIVEL',
-    dataDeCadastramento: new Date()
+    centroAcademicoId: 0
   })
+
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
+
+
     if (idParam) {
       const id = Number(idParam);
-      const eaEncontrada = this.eaService.obterPorId(id);
+      this.isModoEditor = true;
 
-      if (eaEncontrada) {
+      this.eaService.obterPorId(id).subscribe({
+        next: (espacoEncontrado: Ea) => {
 
-        this.isModoEditor = true;
-        this.eaForm.set({ ...eaEncontrada });
+          let dataFormatada: any = espacoEncontrado.dataCadastro;
+          if (dataFormatada) {
+            dataFormatada = new Date(dataFormatada).toISOString().split('T')[0];
+          }
 
-      } else {
-        this.router.navigate(['colaborador/ea'])
-      }
+          this.eaForm.set({
+            id: espacoEncontrado.id,
+            sigla: espacoEncontrado.sigla,
+            nome: espacoEncontrado.nome,
+            capacidadeMaxima: espacoEncontrado.capacidadeMaxima,
+            tipo: espacoEncontrado.tipo,
+            descricaoComplementar: espacoEncontrado.descricaoComplementar,
+            localizacao: espacoEncontrado.localizacao,
+            centroAcademicoId: espacoEncontrado.centroAcademicoId,
+            centroAcademicoNome: espacoEncontrado.centroAcademicoNome,
+            status: espacoEncontrado.status,
+            dataCadastro: dataFormatada,
+            softwares: espacoEncontrado.softwares
+          })
+        }
+      })
     }
-  }
 
-  get softsFiltrados(): Software[] | undefined {
-    return this.eaService.obterSoftwares(this.eaForm().id);
   }
+  softsFiltrados = computed(() => {
+    const idsSelecionados = this.eaForm().softwares ?? [];
+    const todosSoftwares = this.softService.listaSofts(); // Signal com todos os softwares cadastrados
 
+    return todosSoftwares.filter(soft => idsSelecionados.includes(soft.id ?? 1));
+  });
   salvar() {
 
     if (this.isModoEditor) {
-      this.eaService.salvar(this.eaForm());
+      this.eaService.salvar(this.eaForm()).subscribe();
     } else {
-      this.eaService.adicionar(this.eaForm());
+      this.eaService.adicionar(this.eaForm()).subscribe();
     }
 
     this.router.navigate(['colaborador/ea']);
@@ -63,7 +86,8 @@ export class TabelaSoftwaresComponent {
 
   adicionarSoftware() {
     if (this.isModoEditor) {
-      this.router.navigate(['colaborador', 'ea', 'editar', this.eaForm().id, 'software']);
+      const id = this.eaForm().id;
+      this.router.navigate(['colaborador', 'ea', 'editar', id, 'software']);
     } else {
       this.router.navigate(['colaborador', 'ea', 'novo', 'software']);
     }

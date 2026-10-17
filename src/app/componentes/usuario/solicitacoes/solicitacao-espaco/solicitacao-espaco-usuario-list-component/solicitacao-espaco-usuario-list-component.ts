@@ -1,29 +1,30 @@
-import { Component, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
-import { EaService } from '../../../../../services/colaborador/ea-service';
-import { solicitacao_espaco, SolicitacaoEspacoService } from '../../../../../services/colaborador/solicitacoes/solicitacao-espaco-service';
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { SolicitacaoEspacoService } from '../../../../../services/colaborador/solicitacoes/solicitacao-espaco-service';
 
 @Component({
-  imports: [RouterLink, RouterOutlet],
   selector: 'app-solicitacao-espaco-usuario-list-component',
-  styleUrl: './solicitacao-espaco-usuario-list-component.css',
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterOutlet, DatePipe],
   templateUrl: './solicitacao-espaco-usuario-list-component.html',
+  styleUrl: './solicitacao-espaco-usuario-list-component.css',
 })
-export class SolicitacaoEspacoUsuarioListComponent {
-  route = inject(ActivatedRoute);
-  eaService = inject(EaService);
-  solService = inject(SolicitacaoEspacoService)
+export class SolicitacaoEspacoUsuarioListComponent implements OnInit {
+  private solicitacaoService = inject(SolicitacaoEspacoService);
 
-  inativar() {
+  // Expõe o Signal diretamente para o template (@for(solicitacao of solicitacoes(); ...))
+  readonly solicitacoes = this.solicitacaoService.solicitacoes_espaco;
 
+  ngOnInit(): void {
+    this.solicitacaoService.carregarTodos().subscribe();
   }
 
-  novaSolicitacao() {
-    
+  inativar(id: number): void {
+    if (confirm('Tem certeza de que deseja inativar esta solicitação?')) {
+      this.solicitacaoService.inativar(id).subscribe({
+        error: (err) => console.error('Erro ao inativar solicitação:', err)
+      });
+    }
   }
-
-  get solicitacoes() : solicitacao_espaco[] {
-    return this.solService.solicitacoes_espaco()
-  }
-
 }

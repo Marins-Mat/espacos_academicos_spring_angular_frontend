@@ -41,7 +41,7 @@ export class DocenteListComponent {
   alternarStatus(id?: number) {
     if (!id) return
     this.docenteService.alterarStatus(id).subscribe({
-      error: (err) => console.error('Erro ao alterar status do curso:', err)
+      error: (err) => console.error('Erro ao alterar status do docente:', err)
     })
   }
 

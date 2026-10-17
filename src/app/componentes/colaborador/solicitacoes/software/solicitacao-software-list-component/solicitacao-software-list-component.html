@@ -2,49 +2,52 @@
     <header class="cabecalho">
         <h1>Solicitações de software</h1>
     </header>
+
     <div class="solicitacoes-container">
         <div class="tabela">
             <table class="tabela-solicitacoes">
-                <th>Software solicitado</th>
-                <th>Laboratorio solicitado</th>
-                <th>Solicitante</th>
-                <th>Objetivo</th>
-                <th>Data da solicitação</th>
-                <th>Status da solicitação</th>
-                <th>Ações</th>
-
-                @for (solicitacao of solicitacoes; track solicitacao.id) {
-                <tr>
-                    <td>{{softService.obterPorId(solicitacao.id_software)?.nome}}</td>
-                    <td>{{eaService.obterPorId(solicitacao.id_laboratorio)?.nome}}</td>
-                    <td>{{solicitacao.id_solicitante}}</td>
-                    <td>{{solicitacao.objetivo}}</td>
-                    <td>{{solicitacao.data_solicitacao.toLocaleDateString('pt-BR')}}</td>
-                    <td>{{solicitacao.status}}</td>
-                    <td>
-                        <div class="btn-group">
-                            @if (solicitacao.status==='APROVADA') {
-                            --
-                            } @else if (solicitacao.status==='REPROVADA') {
-                            <button
-                                [routerLink]="['/colaborador', 'solicitacoes_software', 'justificativa', solicitacao.id]"
-                                class="btn-acao">Justificativa</button>
-                            } @else {
-                            <button (click)="aprovarSolicitacao()" class="btn-acao">Aprovar</button>
-                            <button
-                                [routerLink]="['/colaborador', 'solicitacoes_software', 'justificativa', solicitacao.id]"
-                                class="btn-acao">Reprovar</button>
-                            }
-
-
-                        </div>
-                    </td>
-                </tr>
-                }
+                <thead>
+                    <tr>
+                        <th>Software solicitado</th>
+                        <th>Laboratório</th>
+                        <th>Solicitante</th>
+                        <th>Data da solicitação</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (solicitacao of solicitacoes(); track solicitacao.id) {
+                    <tr>
+                        <td>{{ solicitacao.softwareNome || 'N/A' }}</td>
+                        <td>{{ solicitacao.laboratorioNome || 'N/A' }}</td>
+                        <td>{{ solicitacao.solicitanteNome || 'N/A' }}</td>
+                        <td>{{ solicitacao.dataHoraSolicitacao | date: 'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ solicitacao.status }}</td>
+                        <td>
+                            <div class="btn-group">
+                                @if (solicitacao.status === 'APROVADA') {
+                                    <span>--</span>
+                                } @else if (solicitacao.status === 'REPROVADA') {
+                                    <button [routerLink]="['/colaborador', 'solicitacoes_software', 'justificativa', solicitacao.id]"
+                                            class="btn-acao">
+                                        Justificativa
+                                    </button>
+                                } @else {
+                                    <button (click)="aprovarSolicitacao(solicitacao.id)" class="btn-acao">Aprovar</button>
+                                    <button [routerLink]="['/colaborador', 'solicitacoes_software', 'justificativa', solicitacao.id]"
+                                            class="btn-acao btn-reprovar">
+                                        Reprovar
+                                    </button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
             </table>
         </div>
     </div>
-    
-        
 
+    <router-outlet></router-outlet>
 </div>

@@ -142,7 +142,7 @@ export const routes: Routes = [
                     {
                         path: '', component: SolicitacaoEspacoUsuarioListComponent,
                         children: [
-                            { path: 'novo', component: SolicitacaoEspacoUsuarioFormComponent },
+                            { path: 'nova', component: SolicitacaoEspacoUsuarioFormComponent },
                             { path: 'editar/:id', component: SolicitacaoEspacoUsuarioFormComponent },
                             { path: 'justificativa/:id', component: SolicitacaoEspacoUsuarioJustComponent }
                         ]
@@ -155,7 +155,7 @@ export const routes: Routes = [
                     {
                         path: '', component: SolicitacaoSoftwareUsuarioListComponent,
                         children: [
-                            { path: 'novo', component: SolicitacaoSoftwareUsuarioFormComponent },
+                            { path: 'nova', component: SolicitacaoSoftwareUsuarioFormComponent },
                             { path: 'editar/:id', component: SolicitacaoSoftwareUsuarioFormComponent },
                             { path: 'justificativa/:id', component: SolicitacaoSoftwareUsuarioJustComponent }
                         ]

@@ -1,71 +1,68 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SolicitacaoSoftwareService } from '../../../../../services/colaborador/solicitacoes/solicitacao-software-service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { SoftwareService } from '../../../../../services/colaborador/software-service';
+import { AuthService } from '../../../../../core/auth/auth-service';
 
 @Component({
-  imports: [FormsModule],
   selector: 'app-solicitacao-software-just-component',
-  styleUrl: './solicitacao-software-just-component.css',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './solicitacao-software-just-component.html',
+  styleUrl: './solicitacao-software-just-component.css',
 })
-export class SolicitacaoSoftwareJustComponent {
-  route = inject(ActivatedRoute)
-  solService = inject(SolicitacaoSoftwareService)
-  softService = inject(SoftwareService)
+export class SolicitacaoSoftwareJustComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+    authService = inject(AuthService)
+  private solService = inject(SolicitacaoSoftwareService);
 
+  solicitacaoId?: number;
+  isModoEditor = true;
 
-
-  private paramMap = toSignal(this.route.paramMap)
-
-
-  isModoEditor = true
+  textoJustificativa = '';
+  solicitante_nome = signal<string>('');
+  software_nome = signal<string>('');
   justificativa = signal<string>('');
-  solicitante_nome = signal<number>(0);
-  software_nome = signal<string>('')
 
+  ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
+    if (id) {
+      this.solicitacaoId = id;
+      this.solService.obterPorId(id).subscribe({
+        next: (sol) => {
+          this.software_nome.set(sol.softwareNome || 'N/A');
+          this.solicitante_nome.set(sol.solicitanteNome || 'N/A');
 
-  constructor() {
-    effect(() => {
-      const params = this.paramMap()
-      const id = Number(params?.get('id'))
-
-      if (id) {
-
-        const solicitacaoEncontrada = this.solService.obterPorId(id);
-
-        if (solicitacaoEncontrada) {
-
-          this.solicitante_nome.set(Number(solicitacaoEncontrada.id_solicitante))
-
-          const softwareEncontrado = this.softService.obterPorId(solicitacaoEncontrada.id_software)
-          if (softwareEncontrado) {
-            this.software_nome.set(softwareEncontrado.nome)
+          if (sol.justificativaReprovacao) {
+            this.isModoEditor = false;
+            this.justificativa.set(sol.justificativaReprovacao);
+          } else {
+            this.isModoEditor = true;
           }
-
-
-          const justificativaEncontrada = solicitacaoEncontrada.justificativa;
-
-          if (justificativaEncontrada) {
-            this.isModoEditor = false
-            this.justificativa.set(justificativaEncontrada ?? '')
-            return
-          }
-
         }
-      }
-
-      this.isModoEditor = true
-      this.justificativa.set('')
-
-
-    })
+      });
+    }
   }
 
-  salvarReprovacao() {
-    
+  salvarReprovacao(): void {
+    if (!this.solicitacaoId || !this.textoJustificativa.trim()) {
+      alert('Por favor, preencha a justificativa da reprovação.');
+      return;
+    }
+
+    const avaliadorId = this.authService.obterUsuarioId() ?? 0;
+
+    this.solService.reprovar(this.solicitacaoId, {
+      avaliadorId,
+      justificativaReprovacao: this.textoJustificativa
+    }).subscribe({
+      next: () => {
+        this.router.navigate(['/colaborador/solicitacoes_software']);
+      },
+      error: (err) => console.error('Erro ao reprovar solicitação:', err)
+    });
   }
 }

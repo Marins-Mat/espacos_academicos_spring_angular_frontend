@@ -1,33 +1,27 @@
-import { Component, inject } from '@angular/core';
-import { EaService } from '../../../../../services/colaborador/ea-service';
-import { SoftwareService } from '../../../../../services/colaborador/software-service';
-import { solicitacao_software, SolicitacaoSoftwareService } from '../../../../../services/colaborador/solicitacoes/solicitacao-software-service';
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { SolicitacaoSoftwareService } from '../../../../../services/colaborador/solicitacoes/solicitacao-software-service';
 
 @Component({
-  imports: [RouterLink, RouterOutlet],
   selector: 'app-solicitacao-software-usuario-list-component',
-  styleUrl: './solicitacao-software-usuario-list-component.css',
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterOutlet],
   templateUrl: './solicitacao-software-usuario-list-component.html',
+  styleUrl: './solicitacao-software-usuario-list-component.css',
 })
-export class SolicitacaoSoftwareUsuarioListComponent {
+export class SolicitacaoSoftwareUsuarioListComponent implements OnInit {
+  private solicitacaoService = inject(SolicitacaoSoftwareService);
 
-  solicitacaoService = inject(SolicitacaoSoftwareService)
-  softService = inject(SoftwareService)
-  eaService = inject(EaService)
+  readonly solicitacoes = this.solicitacaoService.solicitacoes_software;
 
-
-  get solicitacoes() : solicitacao_software[] {
-    return this.solicitacaoService.solicitacoes_software();
+  ngOnInit(): void {
+    this.solicitacaoService.carregarTodas().subscribe();
   }
 
-
-  inativar() {
-    
+  inativar(id: number): void {
+    if (confirm('Deseja realmente inativar esta solicitação?')) {
+      // Implementação da chamada HTTP de inativação
+    }
   }
-
-  aprovarSolicitacao() {
-    console.log("Aprovada")
-  }
-
 }

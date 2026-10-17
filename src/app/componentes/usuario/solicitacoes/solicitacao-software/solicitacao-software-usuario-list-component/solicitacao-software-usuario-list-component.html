@@ -1,50 +1,54 @@
 <div class="container">
     <header class="cabecalho">
         <h1>Solicitações de software</h1>
+        <button routerLink="/usuario/solicitacoes_software/nova">Nova Solicitação</button>
     </header>
+
     <div class="solicitacoes-container">
         <div class="tabela">
             <table class="tabela-solicitacoes">
-                <th>Software solicitado</th>
-                <th>Laboratorio solicitado</th>
-                <th>Avaliador</th>
-                <th>Objetivo</th>
-                <th>Data da solicitação</th>
-                <th>Status da solicitação</th>
-                <th>Ações</th>
-
-                @for (solicitacao of solicitacoes; track solicitacao.id) {
-                <tr>
-                    <td>{{softService.obterPorId(solicitacao.id_software)?.nome}}</td>
-                    <td>{{eaService.obterPorId(solicitacao.id_laboratorio)?.nome}}</td>
-                    <td>{{solicitacao.id_avaliador}}</td>
-                    <td>{{solicitacao.objetivo}}</td>
-                    <td>{{solicitacao.data_solicitacao.toLocaleDateString('pt-BR')}}</td>
-                    <td>{{solicitacao.status}}</td>
-                    <td>
-                        <div class="btn-group">
-                            @if (solicitacao.status==='APROVADA') {
-                            --
-                            } @else if (solicitacao.status==='REPROVADA') {
-                            <button [routerLink]="['/usuario', 'solicitacoes_software', 'justificativa', solicitacao.id]"
-                                class="btn-acao" class="btn-acao">Justificativa</button>
-                            } @else if(solicitacao.status==='PENDENTE'){
-                            <button (click)="inativar()" class="btn-acao">Inativar</button>
-                            <button [routerLink]="['/usuario', 'solicitacoes_software', 'editar', solicitacao.id]"
-                                class="btn-acao btn-reprovar">Editar</button>
-
-                            }
-
-                        </div>
-                    </td>
-                </tr>
-                }
+                <thead>
+                    <tr>
+                        <th>Software solicitado</th>
+                        <th>Laboratório</th>
+                        <th>Avaliador</th>
+                        <th>Data da solicitação</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (solicitacao of solicitacoes(); track solicitacao.id) {
+                    <tr>
+                        <td>{{ solicitacao.softwareNome || 'N/A' }}</td>
+                        <td>{{ solicitacao.laboratorioNome || 'N/A' }}</td>
+                        <td>{{ solicitacao.avaliadorNome || 'Pendente' }}</td>
+                        <td>{{ solicitacao.dataHoraSolicitacao | date: 'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ solicitacao.status }}</td>
+                        <td>
+                            <div class="btn-group">
+                                @if (solicitacao.status === 'APROVADA') {
+                                    <span>--</span>
+                                } @else if (solicitacao.status === 'REPROVADA') {
+                                    <button [routerLink]="['/usuario', 'solicitacoes_software', 'justificativa', solicitacao.id]"
+                                            class="btn-acao">
+                                        Justificativa
+                                    </button>
+                                } @else if (solicitacao.status === 'PENDENTE') {
+                                    <button (click)="inativar(solicitacao.id)" class="btn-acao">Inativar</button>
+                                    <button [routerLink]="['/usuario', 'solicitacoes_software', 'editar', solicitacao.id]"
+                                            class="btn-acao btn-reprovar">
+                                        Editar
+                                    </button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
             </table>
         </div>
     </div>
-    
+
     <router-outlet></router-outlet>
-
-
-
 </div>
